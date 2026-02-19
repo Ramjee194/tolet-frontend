@@ -11,8 +11,11 @@ import { FaBath } from "react-icons/fa";
 import { MdStayPrimaryLandscape } from "react-icons/md";
 import { IoPersonOutline } from "react-icons/io5";
 import GooglePlay from "./GoogleAppPage";
+import { Footer } from "./Footer";
+import { useNavigate } from "react-router-dom";
 
 function LandingPage() {
+  const navigate = useNavigate();
   return (
     <div className="bg-white">
       {/* HERO SECTION */}
@@ -82,12 +85,12 @@ function LandingPage() {
 
           {/* BUTTONS */}
           <div className="flex flex-col sm:flex-row gap-10 mt-10">
-            <button className="flex items-center justify-center gap-2 bg-red-500 hover:bg-red-600 text-white rounded-xl px-6 py-3 transition">
+            <button onClick={()=>navigate("/property-search")}  className="flex items-center justify-center gap-2 bg-red-500 hover:bg-red-600 text-white rounded-xl px-6 py-3 transition">
               <CiSearch size={18} />
               Find Your Next Home
             </button>
 
-            <button className="flex items-center justify-center gap-2 hover:bg-green-600 text-gray-900 rounded-xl px-8 py-3 transition border border-gray-300">
+            <button onClick={()=>navigate("/owner-dashboard")} className="flex items-center justify-center gap-2 hover:bg-green-600 text-gray-900 rounded-xl px-8 py-3 transition border border-gray-300">
               <FaPlus size={18} />
               List Your Property
             </button>
@@ -193,8 +196,14 @@ function LandingPage() {
           </li>
         </ul>
       </div>
+      {/*googlePlay */}
       <div className="py-12 px-6 sm:px-10 lg:px-16">
        <GooglePlay/>
+      </div>
+
+      {/*Footer */}
+       <div className="">
+       <Footer/>
       </div>
     </div>
   );

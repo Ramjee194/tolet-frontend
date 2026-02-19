@@ -1,8 +1,9 @@
 import React from "react";
-import Navbar from "../navbar/Navbar";
 import LandingPage from "./LandingPage";
+import { useNavigate } from "react-router-dom";
 
 function Home() {
+  const navigate = useNavigate()
   return (
     <>
     <div className="relative  w-full overflow-hidden">
@@ -10,7 +11,7 @@ function Home() {
       <div
         className="absolute inset-0 bg-cover bg-center"
         style={{
-          backgroundImage: "url('/image1.png')",
+          backgroundImage: "url('/hotel5.jpg')",
         }}
       ></div>
 
@@ -20,7 +21,7 @@ function Home() {
       {/* Navbar */}
       <div className="absolute top-0 left-0 w-full z-30">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-10 lg:px-20 py-4">
-          <Navbar />
+          
         </div>
       </div>
 
@@ -76,6 +77,7 @@ function Home() {
           "
           >
             <button
+           onClick={()=>navigate("/property-search")}
               className="
               w-full sm:w-auto
               bg-red-500 
@@ -92,6 +94,7 @@ function Home() {
             </button>
 
             <button
+            onClick={()=>navigate("/contact-us")}
               className="
               w-full sm:w-auto
               bg-white 
@@ -104,7 +107,7 @@ function Home() {
               duration-300
             "
             >
-              About Us
+              Contact Us
             </button>
           </div>
         </div>

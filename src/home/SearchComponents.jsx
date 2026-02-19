@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { CiSearch } from "react-icons/ci";
 import { FaHome } from "react-icons/fa";
 import { IoBedOutline } from "react-icons/io5";
@@ -9,6 +9,16 @@ import { FaCar } from "react-icons/fa";
 import { Link } from "react-router-dom";
 
 function SearchComponents() {
+  const [search,setSearch] = useState("");
+
+  const handlesearch =(e)=>{
+    e.preventDefault();
+    console.log(search);
+  }
+
+
+
+
   return (
     <div className="">
       <div>
@@ -24,10 +34,13 @@ function SearchComponents() {
           <div className="relative w-full max-w-xl">
             <input
               type="text"
+              value={search}
+              onChange={(e)=>setSearch(e.target.value)}
+
               placeholder="Search by location, neighborhood or property type"
               className="w-full border border-gray-300 rounded-xl py-3 pl-4 pr-12 focus:outline-none focus:ring-2 focus:ring-red-400"
             />
-            <button className="absolute right-2 top-1/2 -translate-y-1/2 bg-red-500 hover:bg-red-600 text-white p-2 rounded-lg transition">
+            <button onClick={handlesearch}className="absolute right-2 top-1/2 -translate-y-1/2 bg-red-500 hover:bg-red-600 text-white p-2 rounded-lg transition">
               <CiSearch />
             </button>
           </div>
@@ -36,7 +49,7 @@ function SearchComponents() {
           <ul className="flex flex-wrap items-center gap-4">
             <li>
               <Link
-                to="/studio"
+                to="/property-search"
                 className="flex items-center gap-2 bg-gray-50 shadow-sm border border-gray-100 px-3 py-2 rounded-lg hover:bg-gray-100 transition"
               >
                 Studio
@@ -46,7 +59,7 @@ function SearchComponents() {
 
             <li>
               <Link
-                to="/bedroom"
+                to="/property-search"
                 className="flex items-center gap-2 bg-gray-50 shadow-sm border border-gray-100 px-3 py-2 rounded-lg hover:bg-gray-100 transition"
               >
                 Bedroom
@@ -56,7 +69,7 @@ function SearchComponents() {
 
             <li>
               <Link
-                to="/two-bedroom"
+                to="/property-search"
                 className="flex items-center gap-2 bg-gray-50 shadow-sm border border-gray-100 px-3 py-2 rounded-lg hover:bg-gray-100 transition"
               >
                 2+ Bedroom
@@ -66,7 +79,7 @@ function SearchComponents() {
 
             <li>
               <Link
-                to="/pet-friendly"
+                to="/property-search"
                 className="flex items-center gap-2 bg-gray-50 shadow-sm border border-gray-100 px-3 py-2 rounded-lg hover:bg-gray-100 transition"
               >
                 Pet Friendly
@@ -76,7 +89,7 @@ function SearchComponents() {
 
             <li>
               <Link
-                to="/furnished"
+                to="/property-search"
                 className="flex items-center gap-2 bg-gray-50 shadow-sm border border-gray-100 px-3 py-2 rounded-lg hover:bg-gray-100 transition"
               >
                 Furnished
@@ -86,7 +99,7 @@ function SearchComponents() {
 
             <li>
               <Link
-                to="/parking"
+                to="/property-search"
                 className="flex items-center gap-2 bg-gray-50 shadow-sm border border-gray-100 px-3 py-2 rounded-lg hover:bg-gray-100 transition"
               >
                 Parking
