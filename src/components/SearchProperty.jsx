@@ -137,6 +137,8 @@ const PropertyPlatform = () => {
     </div>
   );
 
+  
+
   // Filter Sidebar Component (enhanced)
   const FilterSidebar = () => (
     <div className="space-y-6">
@@ -248,6 +250,7 @@ const PropertyPlatform = () => {
     );
   }
 
+  
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-red-50">
       {/* Top Search Bar */}
@@ -567,12 +570,15 @@ const PropertyPlatform = () => {
             </div>
           </div>
         </div>
+        
       
       )}
+     
       <div className='mt-12 p-0'>
         <Footer/>
       </div>
     </div>
+    
   
   );
 };

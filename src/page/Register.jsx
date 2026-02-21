@@ -4,6 +4,7 @@ import { SiGnuprivacyguard } from "react-icons/si";
 import { Mail, Lock, User, Phone, MapPin } from "lucide-react";
 import { IoCallOutline } from "react-icons/io5";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 
 function Register() {
@@ -16,18 +17,22 @@ function Register() {
     location: "",
   });
     const[isSubmitting,setIsSubmitting] = useState(false);
+    const navigate = useNavigate();
 
 
   const handleSubmit = async(e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    e.preventDefault();
     setIsSubmitting(true);
     try {
         const res = await axios.post("http://localhost:5000/api/auth/register",formData);
         console.log(res.data)
         alert("Register Successfully Please Login now")
+        
+        navigate("/login");
     } catch (error) {
         console.log("Register Failed")
         console.error(error.message)
+        setIsSubmitting(false)
     }
   };
 
@@ -86,7 +91,7 @@ function Register() {
             <p className="text-gray-500 mt-2">Please fill in the details to register</p>
           </div>
 
-          <form className="space-y-5">
+          <form  onSubmit={handleSubmit} className="space-y-5">
             {/* Name Input */}
             <div className="space-y-1">
               <label className="text-sm font-semibold text-gray-700 ml-1">Full Name</label>
@@ -110,7 +115,7 @@ function Register() {
                 <input
                   type="email"
                   value={formData.email}
-                  onChange={(e)=>setFormData({...setFormData ,email:e.target.value})}
+                  onChange={(e)=>setFormData({...formData ,email:e.target.value})}
                   placeholder="Enter E-mail"
                   className="w-full pl-12 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-xl outline-none transition-all"
                 />
@@ -173,8 +178,8 @@ function Register() {
                   <Lock className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" size={20} />
                   <input
                     type="password"
-                    value={formData.password}
-                    onChange={(e)=>setFormData({...formData, password:e.target.value})}
+                    value={formData.confirmPassword}
+                    onChange={(e)=>setFormData({...formData, confirmPassword:e.target.value})}
                     placeholder="Confirm-Password"
                     className="w-full pl-12 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-xl  outline-none transition-all"
                   />
@@ -184,7 +189,7 @@ function Register() {
 
             <button
                   type="submit"
-                  onClick={handleSubmit}
+                 
                   disabled={isSubmitting}
                   className={`w-full py-4 rounded-xl font-bold text-white transition transform hover:scale-[1.02] active:scale-[0.98] shadow-lg
                     ${isSubmitting 

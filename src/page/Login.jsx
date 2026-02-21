@@ -10,38 +10,40 @@ import { useNavigate } from "react-router-dom";
 
 function Login() {
   const [formData, setFormData] = useState({
-    
     email: "",
     password: "",
-   
-    phone: "",
-  
-  });
-    const [isSubmitting, setIsSubmitting] = useState(false);
-    const navigate = useNavigate();
-   
 
+    phone: "",
+  });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const navigate = useNavigate();
+  
 
   const handleSubmit = async (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-   
+    e.preventDefault();
+
     setIsSubmitting(true);
 
     try {
-        const res = await axios.post("http://localhost:5000/api/auth/login",formData)
+      const res = await axios.post(
+        "http://localhost:5000/api/auth/login",
+        formData,
+      );
 
-        console.log("success",res.data);
-        alert("Login successfull");
-        navigate('/')
-        
-        
+      localStorage.setItem("token", res.data.token);
+      localStorage.setItem("user", JSON.stringify(res.data.user));
+      console.log("success", res.data);
+
+      alert("Login successfull");
+      navigate("/");
     } catch (error) {
-        console.log("Login failed")
-    console.error(error.message)
-    console.log("error occured",error)
+      console.log("Login failed");
+      console.error(error.message);
+      console.log("error occured", error);
+      setIsSubmitting(false);
+    }
   };
-  
-  }
+
   return (
     <div className="min-h-screen bg-gray-50 flex items-center justify-center">
       <div className="flex w-full max-w-[1200px] min-h-[800px] bg-white shadow-2xl rounded-3xl overflow-hidden m-4">
@@ -101,9 +103,7 @@ function Login() {
             </p>
           </div>
 
-          <form className="space-y-5">
-          
-
+          <form onSubmit={handleSubmit} className="space-y-5">
             {/* Email  */}
             <div className="space-y-1">
               <label className="text-sm font-semibold text-gray-700 ml-1">
@@ -116,8 +116,10 @@ function Login() {
                 />
                 <input
                   type="email"
-                  value={formData.name}
-                  onChange={(e)=>setFormData({...formData ,  name:e.target.value})}
+                  value={formData.email}
+                  onChange={(e) =>
+                    setFormData({ ...formData, email: e.target.value })
+                  }
                   placeholder="Enter E-mail"
                   className="w-full pl-12 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-xl outline-none transition-all"
                 />
@@ -126,7 +128,7 @@ function Login() {
 
             {/*Phone */}
 
-            <div className="space-y-1">
+            {/* <div className="space-y-1">
               <label className="text-sm font-semibold text-gray-700 ml-1">
                 Phone Number
               </label>
@@ -139,12 +141,14 @@ function Login() {
                 <input
                   type="String"
                   value={formData.phone}
-                  onChange={(e)=>setFormData({...formData,phone:e.target.value})}
+                  onChange={(e) =>
+                    setFormData({ ...formData, phone: e.target.value })
+                  }
                   placeholder="Enter Phone-number"
                   className="w-full pl-12 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-xl outline-none transition-all"
                 />
               </div>
-            </div>
+            </div> */}
 
             {/*password */}
             <div className="space-y-1">
@@ -160,7 +164,9 @@ function Login() {
                 <input
                   type="password"
                   value={formData.password}
-                  onChange={(e)=>setFormData({...formData , password:e.target.value})}
+                  onChange={(e) =>
+                    setFormData({ ...formData, password: e.target.value })
+                  }
                   placeholder="Enter Password"
                   className="w-full pl-12 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-xl outline-none transition-all"
                 />
@@ -178,7 +184,6 @@ function Login() {
 
             <button
               type="submit"
-              onClick={handleSubmit}
               disabled={isSubmitting}
               className={`w-full py-4 rounded-xl font-bold text-white transition transform hover:scale-[1.02] active:scale-[0.98] shadow-lg
                     ${
@@ -198,6 +203,15 @@ function Login() {
                 </span>
               )}
             </button>
+            <p className="text-center text-gray-500 mt-8">
+              Don't have an account?{" "}
+              <a
+                href="/register"
+                className="text-red-600 font-bold hover:underline"
+              >
+                Register
+              </a>
+            </p>
           </form>
         </div>
       </div>

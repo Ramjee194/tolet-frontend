@@ -1,27 +1,35 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { IoMdNotifications } from "react-icons/io";
 import { CiSearch } from "react-icons/ci";
 import { HiMenu, HiX } from "react-icons/hi";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 
 function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
-  const [mouseenter,setMouseEnter] = useState(false);
+  const [mouseenter, setMouseEnter] = useState(false);
   const navigate = useNavigate();
+  const location = useLocation(); // Uncomment this
 
-  
+  const [user, setUser] = useState(null);
 
-  // const [search, setSearch] = useState();
-
-  // const handleSearch = ()=>{
-  //    navigate(`/search?query=${search}`);
-
-  //   console.log(search)
-  // }
+  // Load user from localStorage when component mounts or location changes
+  useEffect(() => {
+    const storedUser = localStorage.getItem("user");
+    if (storedUser && storedUser !== "undefined") {
+      try {
+        setUser(JSON.parse(storedUser));
+      } catch (error) {
+        console.error("Error parsing user data:", error);
+        setUser(null);
+      }
+    } else {
+      setUser(null);
+    }
+  }, [location]); // Re-run when route changes (in case user logs in/out)
 
   return (
-    <div className="bg-white  rounded-full font-bold text-sm  mt-6">
-      <div className="flex justify-between items-center  px-4 md:px-6 py-2 shadow-sm">
+    <div className="bg-white rounded-full font-bold text-sm mt-6">
+      <div className="flex justify-between items-center px-4 md:px-6 py-2 shadow-sm">
         {/* Logo */}
         <div className="flex text-black text-lg font-bold">
           <img
@@ -33,24 +41,13 @@ function Navbar() {
         </div>
 
         {/* Desktop Menu */}
-        <ul onMouseEnter={()=>setMouseEnter(true)}
-            onMouseLeave={()=>setMouseEnter(false)}
-            className={`rounded-lg transition ${mouseenter ? "bg-red-500 border-b-2":"bg-red-500 rounded-lg border border-b-2"}`}
-         className="hidden md:flex items-center space-x-6  text-black">
-          {/* Search */}
-          {/* <li className="flex items-center border border-gray-300 rounded-full px-4 py-2">
-            <input
-              type="text"
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              placeholder="Search here..."
-              className="outline-none bg-transparent text-sm w-32 lg:w-48"
-            />
-            <button onClick={handleSearch}>
-              <CiSearch size={20} className="ml-2 text-gray-500" />
-            </button>{" "}
-          </li> */}
-
+        <ul
+          onMouseEnter={() => setMouseEnter(true)}
+          onMouseLeave={() => setMouseEnter(false)}
+          className={`hidden md:flex items-center space-x-6 text-black rounded-lg transition ${
+            mouseenter ? " " : " "
+          }`}
+        >
           <Link to="/property-search">
             <li>SearchProperty</li>
           </Link>
@@ -76,15 +73,77 @@ function Navbar() {
           </li>
 
           <li>
-            <button onClick ={()=>navigate("/property-search")}  className="text-white px-5 py-2 bg-red-500 rounded-full hover:bg-red-600 transition">
+            <button
+              onClick={() => navigate("/property-search")}
+              className="text-white px-5 py-2 bg-red-500 rounded-full hover:bg-red-600 transition"
+            >
               Book Now
             </button>
           </li>
-           <li>
-            <button onClick ={()=>navigate("/login")}  className="text-white px-5 py-2 bg-red-500 rounded-full hover:bg-red-600 transition">
-              Login
-            </button>
-          </li>
+          
+          {/* User Profile Section */}
+          {user ? (
+            <li className="relative group">
+              {/* Profile Circle - Show user's first letter or name */}
+              <div className="w-10 h-10 rounded-full bg-red-500 text-white flex items-center justify-center cursor-pointer font-semibold text-lg">
+                {user.name ? user.name.charAt(0).toUpperCase() : 
+                 user.email ? user.email.charAt(0).toUpperCase() : 'U'}
+              </div>
+
+              {/* Dropdown Menu */}
+              <div className="absolute right-0 mt-2 w-48 bg-white shadow-lg rounded-lg hidden group-hover:block z-50">
+                {/* User Info */}
+                <div className="px-4 py-3 border-b border-gray-200">
+                  <p className="text-sm font-semibold text-gray-800">{user.name || 'User'}</p>
+                  <p className="text-xs text-gray-500 truncate">{user.email || ''}</p>
+                </div>
+                
+                {/* Dashboard Link */}
+                {/* <div
+                  className="px-4 py-2 text-sm cursor-pointer hover:bg-gray-100"
+                  onClick={() => {
+                    navigate("/owner-dashboard");
+                    setIsOpen(false);
+                  }}
+                >
+                  Dashboard
+                </div> */}
+
+                {/* Profile Link (optional) */}
+                {/* <div
+                  className="px-4 py-2 text-sm cursor-pointer hover:bg-gray-100"
+                  onClick={() => {
+                    navigate("/profile");
+                    setIsOpen(false);
+                  }}
+                >
+                  My Profile
+                </div> */}
+
+                {/* Logout Button */}
+                <div
+                  className="px-4 py-2 text-sm cursor-pointer hover:bg-gray-100 text-red-500 border-t border-gray-200"
+                  onClick={() => {
+                    localStorage.removeItem("user");
+                    localStorage.removeItem("token");
+                    setUser(null);
+                    navigate("/login");
+                  }}
+                >
+                  Logout
+                </div>
+              </div>
+            </li>
+          ) : (
+            <li>
+              <button
+                onClick={() => navigate("/login")}
+                className="text-white px-5 py-2 bg-red-500 rounded-full hover:bg-red-600 transition"
+              >
+                Login
+              </button>
+            </li>
+          )}
         </ul>
 
         {/* Mobile Menu Button */}
@@ -97,7 +156,7 @@ function Navbar() {
         </div>
       </div>
 
-      {/* for Mobile  */}
+      {/* Mobile Menu */}
       {isOpen && (
         <div className="md:hidden mt-4 bg-white rounded-xl shadow-lg p-4 space-y-4">
           <div className="flex items-center border border-gray-300 rounded-full px-4 py-2">
@@ -109,21 +168,48 @@ function Navbar() {
             <CiSearch size={20} className="ml-2 text-gray-500" />
           </div>
 
-          <Link to="/property-details" onClick={() => setIsOpen(false)}>
-            <div>Property Details</div>
-          </Link>
+          {/* <Link to="/property-details" onClick={() => setIsOpen(false)}>
+            <div className="py-2">Property Details</div>
+          </Link> */}
 
-          <Link to="/Owner-dashboard" onClick={() => setIsOpen(false)}>
-            <div>Owner Dashboard</div>
-          </Link>
+          {/* <Link to="/owner-dashboard" onClick={() => setIsOpen(false)}>
+            <div className="py-2">Owner Dashboard</div>
+          </Link> */}
 
-          <Link to="/Community" onClick={() => setIsOpen(false)}>
-            <div>Community</div>
+          <Link to="/community" onClick={() => setIsOpen(false)}>
+            <div className="py-2">Community</div>
           </Link>
 
           <Link to="/more" onClick={() => setIsOpen(false)}>
-            <div>More</div>
+            <div className="py-2">More</div>
           </Link>
+
+          {/* Mobile User Section */}
+          {user && (
+            <div className="border-t border-gray-200 pt-4">
+              <div className="flex items-center space-x-3 mb-3">
+                <div className="w-10 h-10 rounded-full bg-red-500 text-white flex items-center justify-center font-semibold">
+                  {user.name ? user.name.charAt(0).toUpperCase() : 'U'}
+                </div>
+                <div>
+                  <p className="font-semibold">{user.name || 'User'}</p>
+                  <p className="text-xs text-gray-500">{user.email || ''}</p>
+                </div>
+              </div>
+              <button
+                onClick={() => {
+                  localStorage.removeItem("user");
+                  localStorage.removeItem("token");
+                  setUser(null);
+                  navigate("/login");
+                  setIsOpen(false);
+                }}
+                className="text-red-500 w-full text-left py-2"
+              >
+                Logout
+              </button>
+            </div>
+          )}
 
           <div className="flex items-center justify-between">
             <div className="relative">

@@ -37,7 +37,7 @@ const OwnerDashboard = () => {
     { type: "msg", text: "Message from Amit Patel about lease renewal", time: "2 days ago" }
   ];
 
-  // Indian tenant names array
+  
   const indianNames = [
     { name: "Rajesh yadav", phone: "8404827541", email: "ramjee@gmail.com", occupation: "Software Engineer" },
     { name: "Priya Sharma", phone: "8404827541", email: "ramjee@gmail.com", occupation: "Doctor" },
@@ -78,16 +78,16 @@ const OwnerDashboard = () => {
               tenantEmail: indianNames[tenantIndex].email,
               tenantOccupation: indianNames[tenantIndex].occupation,
               tenantAvatar: `https://ui-avatars.com/api/?name=${indianNames[tenantIndex].name.replace(' ', '+')}&background=random&size=100`,
-              leaseStart: '2024-01-01',
-              leaseEnd: '2024-12-31',
+              leaseStart: '2026-01-01',
+              leaseEnd: '2026-12-31',
               rentDueDate: '5th of every month',
-              lastPaymentDate: '2024-03-05',
+              lastPaymentDate: '2026-03-05',
               securityDeposit: Math.floor(parseInt(property.price) * 2),
             }),
             maintenanceRequests: Math.floor(Math.random() * 4),
             maintenanceItems: [
-              { id: 1, issue: "AC not working", status: "pending", date: "2024-03-10" },
-              { id: 2, issue: "Leaking tap", status: "completed", date: "2024-03-05" }
+              { id: 1, issue: "AC not working", status: "pending", date: "2026-03-10" },
+              { id: 2, issue: "Leaking tap", status: "completed", date: "2026-03-05" }
             ],
             documents: [
               { name: "Lease Agreement.pdf", size: "2.4 MB" },
@@ -313,7 +313,7 @@ const OwnerDashboard = () => {
       {/* Properties Grid/List */}
       {loading ? (
         <div className="flex justify-center py-12">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-red-600"></div>
         </div>
       ) : filteredProperties.length === 0 ? (
         <div className="bg-white rounded-[32px] p-12 text-center border border-slate-100">
@@ -322,7 +322,7 @@ const OwnerDashboard = () => {
           <p className="text-slate-500 mb-6">Get started by adding your first property</p>
           <button
             onClick={() => navigate("/add-property")}
-            className="px-6 py-3 bg-blue-600 text-white rounded-xl font-bold hover:bg-blue-700 transition"
+            className="px-6 py-3 bg-red-600 text-white rounded-xl font-bold hover:bg-red-700 transition"
           >
             <Plus size={18} className="inline mr-2" />
             Add New Property
@@ -536,9 +536,9 @@ const OwnerDashboard = () => {
           <p className="text-xs text-orange-600 mt-2">2 tenants pending</p>
         </div>
         <div className="bg-blue-50 p-6 rounded-2xl border border-blue-100">
-          <p className="text-sm text-blue-600 mb-2">Security Deposits</p>
+          <p className="text-sm text-green-600 mb-2">Security Deposits</p>
           <p className="text-3xl font-black text-slate-900">₹16,000</p>
-          <p className="text-xs text-blue-600 mt-2">Held for 4 tenants</p>
+          <p className="text-xs text-green-600 mt-2">Held for 4 tenants</p>
         </div>
         <div className="bg-purple-50 p-6 rounded-2xl border border-purple-100">
           <p className="text-sm text-purple-600 mb-2">Maintenance Expenses</p>
@@ -864,7 +864,7 @@ const PropertyDetail = ({ property, onBack }) => (
         </div>
 
         <div className="flex gap-3">
-          <button className="flex-1 px-6 py-3 bg-blue-600 text-white rounded-xl font-bold hover:bg-blue-700 transition">
+          <button className="flex-1 px-6 py-3 bg-red-600 text-white rounded-xl font-bold hover:bg-red-700 transition">
             Edit Property
           </button>
           <button className="px-6 py-3 border border-red-200 text-red-600 rounded-xl font-bold hover:bg-red-50 transition">

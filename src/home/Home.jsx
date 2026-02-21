@@ -11,7 +11,7 @@ function Home() {
       <div
         className="absolute inset-0 bg-cover bg-center"
         style={{
-          backgroundImage: "url('/hotel5.jpg')",
+          backgroundImage: "url('/hotel1.png')",
         }}
       ></div>
 

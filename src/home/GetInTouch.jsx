@@ -31,7 +31,7 @@ export default function GetInTouch() {
             href="tel:+918853389395"
             className="text-gray-700 dark:text-gray-300 hover:text-green-600 dark:hover:text-green-400 font-medium transition"
           >
-            +91 8853389395
+            +91 8404827541
           </a>
         </div>
 
@@ -41,13 +41,14 @@ export default function GetInTouch() {
             <Mail className="w-6 h-6 text-red-600 dark:text-red-400" />
           </div>
           <a
-            href="mailto:toletforrent9@gmail.com"
+            href="mailto: ramjeekumaryadav558@gmail.com"
             className="text-gray-700 dark:text-gray-300 hover:text-red-600 dark:hover:text-red-400 font-medium transition"
           >
-            toletforrent9@gmail.com
+            ramjeekumaryadav558@gmail.com
           </a>
         </div>
       </div>
     </div>
+    
   );
 }
