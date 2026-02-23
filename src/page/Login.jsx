@@ -17,7 +17,6 @@ function Login() {
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const navigate = useNavigate();
-  
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -32,10 +31,18 @@ function Login() {
 
       localStorage.setItem("token", res.data.token);
       localStorage.setItem("user", JSON.stringify(res.data.user));
+      localStorage.setItem("owner", JSON.stringify(res.data.owner));
+
+      if ( res.data.user.role === "admin") {
+        navigate("/admin/dashboard");
+      } else if (res.data.user.role === "owner") {
+        navigate("/owner-dashboard");
+      } else {
+        navigate("/");
+      }
       console.log("success", res.data);
 
       alert("Login successfull");
-      navigate("/");
     } catch (error) {
       console.log("Login failed");
       console.error(error.message);

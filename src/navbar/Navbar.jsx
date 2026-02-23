@@ -48,7 +48,7 @@ function Navbar() {
             mouseenter ? " " : " "
           }`}
         >
-          <Link to="/property-search">
+          <Link to="/property">
             <li>SearchProperty</li>
           </Link>
           <Link to="/property-details">

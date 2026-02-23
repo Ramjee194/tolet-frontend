@@ -2,7 +2,7 @@ import React from 'react'
 
 function ForgotPaasword() {
   return (
-    <div>ForgotPaasword</div>
+    <div>ForgotPaasworddsdcd</div>
   )
 }
 

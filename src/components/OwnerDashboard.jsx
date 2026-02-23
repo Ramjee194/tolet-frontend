@@ -237,14 +237,14 @@ const OwnerDashboard = () => {
           </section>
 
           {/* Portfolio Insights */}
-          <div className="bg-white rounded-[32px] p-8 text-gray-800 relative overflow-hidden border border-slate-100">
+          {/* <div className="bg-white rounded-[32px] p-8 text-gray-800 relative overflow-hidden border border-slate-100">
             <div className="relative z-10">
               <h3 className="font-black text-xl mb-2">Portfolio Insights</h3>
               <p className="text-slate-800 text-sm leading-relaxed mb-6">Your rental yield in the Downtown area is 12% higher than the local average. Consider increasing rates on renewal.</p>
               <button className="bg-white text-green-600 px-6 py-2.5 rounded-xl font-black text-sm shadow-xl border border-green-200">Get Full Audit</button>
             </div>
             <TrendingUp size={120} className="absolute -bottom-4 -right-4 text-blue-500/30 rotate-12" />
-          </div>
+          </div> */}
         </div>
       </div>
     </>
@@ -579,7 +579,7 @@ const OwnerDashboard = () => {
           <div className="bg-slate-900 p-2 rounded-lg">
             <Home size={24} className="text-white" />
           </div>
-          <span className="text-xl font-black tracking-tight">Owner Panel</span>
+          <span className="text-xl font-black tracking-tight">Admin Panel</span>
         </div>
         
         <nav className="space-y-1 flex-1">
@@ -772,7 +772,37 @@ const PropertyCard = ({ property, viewMode, onClick }) => {
 };
 
 // Property Detail Component
-const PropertyDetail = ({ property, onBack }) => (
+const PropertyDetail = ({ property, onBack }) => {
+  const navigate = useNavigate();
+ 
+  const handleDelete = async () =>{
+    try {
+      const res = await axios.delete(`http://localhost:5000/api/auth/v1/listings/${(property._id)}`)
+
+      console.log(res.data)
+      console.log("listing deleted successfully")
+      alert("Listing deleted successfull")
+    } catch (error) {
+      console.log(error.message)
+      console.log("Failed to deleted listings")
+      
+    }
+  }
+
+  //  const handleupdate = async () =>{
+  //   try {
+  //     const res = await axios.put(`http://localhost:5000/api/auth/v1/listings/${(property._id)}`)
+
+  //     console.log(res.data)
+  //     console.log("listing updated  successfully")
+  //     alert("Listing update successfull")
+  //   } catch (error) {
+  //     console.log(error.message)
+  //     console.log("Failed to update listings")
+      
+  //   }
+  // }
+  return (
   <div className="bg-white rounded-[32px] border border-slate-100 p-8">
     <button onClick={onBack} className="flex items-center gap-2 text-slate-600 hover:text-slate-900 mb-6">
       <ChevronRight size={20} className="rotate-180" />
@@ -864,17 +894,18 @@ const PropertyDetail = ({ property, onBack }) => (
         </div>
 
         <div className="flex gap-3">
-          <button className="flex-1 px-6 py-3 bg-red-600 text-white rounded-xl font-bold hover:bg-red-700 transition">
+          <button onClick={()=>navigate("/add-property")} className="flex-1 px-6 py-3 bg-red-600 text-white rounded-xl font-bold hover:bg-red-700 transition">
             Edit Property
           </button>
-          <button className="px-6 py-3 border border-red-200 text-red-600 rounded-xl font-bold hover:bg-red-50 transition">
+          <button onClick={handleDelete} className="px-6 py-3 border border-red-200 text-red-600 rounded-xl font-bold hover:bg-red-50 transition">
             Delete
           </button>
         </div>
       </div>
     </div>
   </div>
-);
+  )
+};
 
 // Navigation Item Component
 const NavItem = ({ icon, label, active = false, onClick }) => (

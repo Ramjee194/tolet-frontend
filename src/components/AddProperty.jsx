@@ -111,7 +111,7 @@ function AddProperty() {
       setImageFiles([]);
       setImagePreviews([]);
       
-      navigate("/property-search");
+      navigate("/property");
       
     } catch (error) {
       console.error("Submission error:", error);
