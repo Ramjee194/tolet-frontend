@@ -31,13 +31,8 @@ function Navbar() {
     <div className="bg-white rounded-full font-bold text-sm mt-6">
       <div className="flex justify-between items-center px-4 md:px-6 py-2 shadow-sm">
         {/* Logo */}
-        <div className="flex text-black text-lg font-bold">
-          <img
-            className="w-16 h-10"
-            src="https://static.vecteezy.com/system/resources/previews/010/982/757/large_2x/house-icon-logo-illustration-home-symbol-template-for-graphic-and-web-design-collection-free-vector.jpg"
-            alt=""
-          />
-          ToletForRent
+        <div className="flex ml-15 text-black text-lg font-bold">
+          <img className="w-24 h-14  rounded-xl" src="/toletforrentlogo.jfif" alt="" />
         </div>
 
         {/* Desktop Menu */}
@@ -80,24 +75,31 @@ function Navbar() {
               Book Now
             </button>
           </li>
-          
+
           {/* User Profile Section */}
           {user ? (
             <li className="relative group">
               {/* Profile Circle - Show user's first letter or name */}
               <div className="w-10 h-10 rounded-full bg-red-500 text-white flex items-center justify-center cursor-pointer font-semibold text-lg">
-                {user.name ? user.name.charAt(0).toUpperCase() : 
-                 user.email ? user.email.charAt(0).toUpperCase() : 'U'}
+                {user.name
+                  ? user.name.charAt(0).toUpperCase()
+                  : user.email
+                    ? user.email.charAt(0).toUpperCase()
+                    : "U"}
               </div>
 
               {/* Dropdown Menu */}
               <div className="absolute right-0 mt-2 w-48 bg-white shadow-lg rounded-lg hidden group-hover:block z-50">
                 {/* User Info */}
                 <div className="px-4 py-3 border-b border-gray-200">
-                  <p className="text-sm font-semibold text-gray-800">{user.name || 'User'}</p>
-                  <p className="text-xs text-gray-500 truncate">{user.email || ''}</p>
+                  <p className="text-sm font-semibold text-gray-800">
+                    {user.name || "User"}
+                  </p>
+                  <p className="text-xs text-gray-500 truncate">
+                    {user.email || ""}
+                  </p>
                 </div>
-                
+
                 {/* Dashboard Link */}
                 {/* <div
                   className="px-4 py-2 text-sm cursor-pointer hover:bg-gray-100"
@@ -189,11 +191,11 @@ function Navbar() {
             <div className="border-t border-gray-200 pt-4">
               <div className="flex items-center space-x-3 mb-3">
                 <div className="w-10 h-10 rounded-full bg-red-500 text-white flex items-center justify-center font-semibold">
-                  {user.name ? user.name.charAt(0).toUpperCase() : 'U'}
+                  {user.name ? user.name.charAt(0).toUpperCase() : "U"}
                 </div>
                 <div>
-                  <p className="font-semibold">{user.name || 'User'}</p>
-                  <p className="text-xs text-gray-500">{user.email || ''}</p>
+                  <p className="font-semibold">{user.name || "User"}</p>
+                  <p className="text-xs text-gray-500">{user.email || ""}</p>
                 </div>
               </div>
               <button

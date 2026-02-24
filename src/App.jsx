@@ -20,6 +20,9 @@ import Tenants from "./page/admin/Tenants";
 import Earning from "./page/admin/Earning";
 import Maintenance from "./page/admin/Maintenance";
 import Finance from "./page/admin/Finance";
+import Firstownerform from "./page/owner/FirstOwnerForm";
+import Secondownerform from "./page/owner/Secondownerform";
+import Thirdownerform from "./page/owner/Thirdownerform";
 
 function App() {
   return (
@@ -41,6 +44,7 @@ function App() {
         <Route path="/register" element={<Register />} />
 
         {/* ADMIN ROUTES - CORRECTED for /admin/* pattern */}
+
         <Route path="/admin" element={<Adminlayout />}>
           <Route index element={<AdminDashboard />} />
           <Route path="dashboard" element={<AdminDashboard />} />
@@ -49,6 +53,14 @@ function App() {
           <Route path="earning" element={<Earning />} />
           <Route path="maintenance" element={<Maintenance />} />
           <Route path="finance" element={<Finance />} />
+        </Route>
+
+        {/* owner property verification form */}
+        
+        <Route>
+          <Route path="/firstownerform" element={< Firstownerform/>} />
+          <Route path="/secondownerform" element={<Secondownerform />} />
+          <Route path="/thirdownerform" element={<Thirdownerform />} />
         </Route>
 
         {/* Catch all - 404 page */}
@@ -64,7 +76,9 @@ const NotFound = () => (
     <div className="text-center">
       <h1 className="text-4xl font-bold text-gray-800 mb-4">404</h1>
       <p className="text-gray-600 mb-6">Page not found</p>
-      <a href="/" className="text-red-600 hover:underline">Go back home</a>
+      <a href="/" className="text-red-600 hover:underline">
+        Go back home
+      </a>
     </div>
   </div>
 );
