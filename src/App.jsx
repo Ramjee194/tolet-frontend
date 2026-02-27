@@ -2,7 +2,7 @@ import "./App.css";
 import AddProperty from "./components/AddProperty";
 import CommunityHub from "./components/Community";
 import OwnerDashboard from "./components/OwnerDashboard";
-import PropertyFullDetail from "./components/PropertyDetails";
+// import PropertyFullDetail from "./components/PropertyDetails";
 import ContactUs from "./home/ContactUs";
 import Home from "./home/Home";
 import Navbar from "./navbar/Navbar";
@@ -23,6 +23,9 @@ import Finance from "./page/admin/Finance";
 import Firstownerform from "./page/owner/FirstOwnerForm";
 import Secondownerform from "./page/owner/Secondownerform";
 import Thirdownerform from "./page/owner/Thirdownerform";
+import Visitpropertypage from "./page/Visitpropertypage";
+import Confirmbooking from "./page/Confirmbooking";
+import Addpropertystep2 from "./components/Addpropertystep2";
 
 function App() {
   return (
@@ -33,10 +36,11 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/property" element={<PropertySearch />} />
         <Route path="/property/:id" element={<PropertyDetail />} />
-        <Route path="/property-details" element={<PropertyFullDetail />} />
+        {/* <Route path="/property-details" element={<PropertyFullDetail />} /> */}
         <Route path="/community" element={<CommunityHub />} />
         <Route path="/contact-us" element={<ContactUs />} />
         <Route path="/add-property" element={<AddProperty />} />
+        <Route path="add-property/step2" element={<Addpropertystep2/>}/>
         <Route path="/owner-dashboard" element={<OwnerDashboard />} />
 
         {/* Auth Routes */}

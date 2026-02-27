@@ -49,7 +49,7 @@ function SearchComponents() {
           <ul className="flex flex-wrap items-center gap-4">
             <li>
               <Link
-                to="/property-search"
+                to="/property"
                 className="flex items-center gap-2 bg-gray-50 shadow-sm border border-gray-100 px-3 py-2 rounded-lg hover:bg-gray-100 transition"
               >
                 Studio
@@ -59,7 +59,7 @@ function SearchComponents() {
 
             <li>
               <Link
-                to="/property-search"
+                to="/property"
                 className="flex items-center gap-2 bg-gray-50 shadow-sm border border-gray-100 px-3 py-2 rounded-lg hover:bg-gray-100 transition"
               >
                 Bedroom
@@ -69,7 +69,7 @@ function SearchComponents() {
 
             <li>
               <Link
-                to="/property-search"
+                to="/property"
                 className="flex items-center gap-2 bg-gray-50 shadow-sm border border-gray-100 px-3 py-2 rounded-lg hover:bg-gray-100 transition"
               >
                 2+ Bedroom
@@ -79,7 +79,7 @@ function SearchComponents() {
 
             <li>
               <Link
-                to="/property-search"
+                to="/property"
                 className="flex items-center gap-2 bg-gray-50 shadow-sm border border-gray-100 px-3 py-2 rounded-lg hover:bg-gray-100 transition"
               >
                 Pet Friendly
@@ -89,7 +89,7 @@ function SearchComponents() {
 
             <li>
               <Link
-                to="/property-search"
+                to="/property"
                 className="flex items-center gap-2 bg-gray-50 shadow-sm border border-gray-100 px-3 py-2 rounded-lg hover:bg-gray-100 transition"
               >
                 Furnished
@@ -99,7 +99,7 @@ function SearchComponents() {
 
             <li>
               <Link
-                to="/property-search"
+                to="/property"
                 className="flex items-center gap-2 bg-gray-50 shadow-sm border border-gray-100 px-3 py-2 rounded-lg hover:bg-gray-100 transition"
               >
                 Parking

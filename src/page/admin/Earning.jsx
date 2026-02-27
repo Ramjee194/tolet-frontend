@@ -60,7 +60,8 @@ const Earning = ({ properties = [] }) => { // Add default empty array
       <div className="bg-white rounded-[32px] p-6 border border-slate-100">
         <h3 className="text-lg font-black mb-4">Recent Payouts</h3>
         <div className="space-y-3">
-          {properties && properties.length > 0 ? ( // Add check for properties
+          {properties && properties.length > 0 ? ( 
+            
             properties.slice(0, 4).map((property, index) => (
               <div
                 key={index}

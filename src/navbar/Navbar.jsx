@@ -46,9 +46,9 @@ function Navbar() {
           <Link to="/property">
             <li>SearchProperty</li>
           </Link>
-          <Link to="/property-details">
+          {/* <Link to="/property-details">
             <li>PropertyDetails</li>
-          </Link>
+          </Link> */}
           <Link className="whitespace-nowrap" to="/owner-dashboard">
             <li>Owner Dashboard</li>
           </Link>
@@ -69,7 +69,7 @@ function Navbar() {
 
           <li>
             <button
-              onClick={() => navigate("/property-search")}
+              onClick={() => navigate("/property")}
               className="text-white px-5 py-2 bg-red-500 rounded-full hover:bg-red-600 transition"
             >
               Book Now

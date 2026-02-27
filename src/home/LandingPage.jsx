@@ -85,7 +85,7 @@ function LandingPage() {
 
           {/* BUTTONS */}
           <div className="flex flex-col sm:flex-row gap-10 mt-10">
-            <button onClick={()=>navigate("/property-search")}  className="flex items-center justify-center gap-2 bg-red-500 hover:bg-red-600 text-white rounded-xl px-6 py-3 transition">
+            <button onClick={()=>navigate("/property")}  className="flex items-center justify-center gap-2 bg-red-500 hover:bg-red-600 text-white rounded-xl px-6 py-3 transition">
               <CiSearch size={18} />
               Find Your Next Home
             </button>

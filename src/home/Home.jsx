@@ -77,7 +77,7 @@ function Home() {
           "
           >
             <button
-           onClick={()=>navigate("/property-search")}
+           onClick={()=>navigate("/property")}
               className="
               w-full sm:w-auto
               bg-red-500 

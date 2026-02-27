@@ -22,36 +22,82 @@ const OwnerDashboard = () => {
   const [selectedProperty, setSelectedProperty] = useState(null);
   const [searchTerm, setSearchTerm] = useState('');
 
-  // Mock data with Indian names
+  // Realistic stats with proper Indian formatting
   const stats = [
-    { label: "Total Revenue", value: "₹24,580", change: "+12.5%", sub: "This Month", icon: <CreditCard className="text-emerald-600" />, trend: "up" },
-    { label: "Occupancy Rate", value: "94.2%", change: "+3.1%", sub: "Current", icon: <PieChart className="text-blue-600" />, trend: "up" },
-    { label: "Active Properties", value: "8", change: "+2", sub: "Total", icon: <Home className="text-purple-600" />, trend: "up" },
-    { label: "Tenant Satisfaction", value: "4.8/5", change: "+0.2", sub: "Average Rating", icon: <Star className="text-orange-500" />, trend: "up" }
+    { 
+      label: "Revenue this month", 
+      value: "₹24,580", 
+      change: "+12.5%", 
+      sub: "vs last month", 
+      icon: <CreditCard className="text-blue-600" />, 
+      trend: "up" 
+    },
+    { 
+      label: "Properties occupied", 
+      value: "12", 
+      change: "2 vacant", 
+      sub: "out of 14 total", 
+      icon: <Home className="text-indigo-600" />, 
+      trend: "neutral" 
+    },
+    { 
+      label: "Pending dues", 
+      value: "₹3,200", 
+      change: "from 2 tenants", 
+      sub: "overdue by 5 days", 
+      icon: <AlertCircle className="text-amber-600" />, 
+      trend: "down" 
+    },
+    { 
+      label: "Maintenance requests", 
+      value: "4", 
+      change: "2 urgent", 
+      sub: "this week", 
+      icon: <Wrench className="text-orange-600" />, 
+      trend: "neutral" 
+    }
   ];
 
   const recentActivity = [
-    { type: "payment", text: "Rent payment received from Rajesh Kumar", time: "2 hours ago"  },
-    { type: "app", text: "New application for Downtown Apartment from Priya Sharma", time: "4 hours ago" },
-    { type: "fix", text: "Maintenance request completed at Penthouse Suite", time: "1 day ago",  },
-    { type: "msg", text: "Message from Amit Patel about lease renewal", time: "2 days ago" }
+    { 
+      type: "payment", 
+      text: "Rent payment received from Rajesh Kumar", 
+      time: "2 hours ago",
+      icon: <CheckCircle2 size={16} className="text-green-600" />
+    },
+    { 
+      type: "application", 
+      text: "New application for Downtown Apartment from Priya Sharma", 
+      time: "4 hours ago",
+      icon: <Users size={16} className="text-blue-600" />
+    },
+    { 
+      type: "maintenance", 
+      text: "Maintenance request completed at Penthouse Suite", 
+      time: "1 day ago",
+      icon: <Wrench size={16} className="text-orange-600" />
+    },
+    { 
+      type: "message", 
+      text: "Message from Amit Patel about lease renewal", 
+      time: "2 days ago",
+      icon: <MessageSquare size={16} className="text-purple-600" />
+    }
   ];
 
-  
   const indianNames = [
-    { name: "Rajesh yadav", phone: "8404827541", email: "ramjee@gmail.com", occupation: "Software Engineer" },
-    { name: "Priya Sharma", phone: "8404827541", email: "ramjee@gmail.com", occupation: "Doctor" },
-    { name: "Amit Patel", phone: "8404827541", email: "ramjee@gmail.com", occupation: "Business Owner" },
-    { name: "Sunita Yadav", phone: "8404827541", email: "ramjee@gmail.com", occupation: "Teacher" },
-    { name: "Vikram Singh", phone: "8404827541", email: "ramjee@gmail.com", occupation: "Bank Manager" },
-    { name: "Anjali Gupta", phone: "8404827541", email: "ramjee@gmail.com", occupation: "Architect" },
-    { name: "Rahul Verma", phone: "8404827541", email: "ramjee@gmail.com", occupation: "Marketing Head" },
-    { name: "Pooja Yadav", phone: "8404827541", email: "ramjee@gmail.com", occupation: "Fashion Designer" },
-    { name: "Suresh yadav", phone: "8404827541", email: "ramjee@gmail.com", occupation: "Chartered Accountant" },
-    { name: "Neha yadav", phone: "8404827541", email: "ramjee@gmail.com", occupation: "HR Manager" }
+    { name: "Rajesh Yadav", phone: "98765 43210", email: "rajesh.y@email.com", occupation: "Software Engineer" },
+    { name: "Priya Sharma", phone: "99887 66554", email: "priya.s@email.com", occupation: "Doctor" },
+    { name: "Amit Patel", phone: "98765 12345", email: "amit.p@email.com", occupation: "Business Owner" },
+    { name: "Sunita Yadav", phone: "98765 67890", email: "sunita.y@email.com", occupation: "Teacher" },
+    { name: "Vikram Singh", phone: "99887 11223", email: "vikram.s@email.com", occupation: "Bank Manager" },
+    { name: "Anjali Gupta", phone: "98765 44556", email: "anjali.g@email.com", occupation: "Architect" },
+    { name: "Rahul Verma", phone: "99887 77889", email: "rahul.v@email.com", occupation: "Marketing Head" },
+    { name: "Pooja Yadav", phone: "98765 99001", email: "pooja.y@email.com", occupation: "Fashion Designer" },
+    { name: "Suresh Yadav", phone: "99887 22334", email: "suresh.y@email.com", occupation: "Chartered Accountant" },
+    { name: "Neha Yadav", phone: "98765 55667", email: "neha.y@email.com", occupation: "HR Manager" }
   ];
 
-  // Fetch properties from API
   useEffect(() => {
     fetchProperties();
   }, []);
@@ -62,14 +108,13 @@ const OwnerDashboard = () => {
       const res = await axios.get("http://localhost:5000/api/auth/v1/listings");
       
       if (res.data && Array.isArray(res.data)) {
-        // Enhance properties with additional data using Indian names
         const enhancedProperties = res.data.map((property, index) => {
           const tenantIndex = index % indianNames.length;
-          const hasTenant = index % 2 === 0; // Alternate properties have tenants
+          const hasTenant = index % 2 === 0;
           
           return {
             ...property,
-            views: Math.floor(Math.random() * 300) + 50,
+            views: Math.floor(Math.random() * 200) + 30,
             status: index % 3 === 0 ? 'occupied' : index % 3 === 1 ? 'vacant' : 'maintenance',
             monthlyRevenue: Math.floor(parseInt(property.price) * 0.9),
             ...(hasTenant && {
@@ -77,24 +122,23 @@ const OwnerDashboard = () => {
               tenantPhone: indianNames[tenantIndex].phone,
               tenantEmail: indianNames[tenantIndex].email,
               tenantOccupation: indianNames[tenantIndex].occupation,
-              tenantAvatar: `https://ui-avatars.com/api/?name=${indianNames[tenantIndex].name.replace(' ', '+')}&background=random&size=100`,
+              tenantAvatar: `https://ui-avatars.com/api/?name=${indianNames[tenantIndex].name.replace(' ', '+')}&background=4f46e5&color=fff&size=100`,
               leaseStart: '2026-01-01',
               leaseEnd: '2026-12-31',
               rentDueDate: '5th of every month',
               lastPaymentDate: '2026-03-05',
               securityDeposit: Math.floor(parseInt(property.price) * 2),
             }),
-            maintenanceRequests: Math.floor(Math.random() * 4),
+            maintenanceRequests: Math.floor(Math.random() * 3),
             maintenanceItems: [
-              { id: 1, issue: "AC not working", status: "pending", date: "2026-03-10" },
-              { id: 2, issue: "Leaking tap", status: "completed", date: "2026-03-05" }
-            ],
+              { id: 1, issue: "AC not cooling properly", status: "pending", date: "2026-03-10", priority: "high" },
+              { id: 2, issue: "Kitchen sink leaking", status: "in-progress", date: "2026-03-08", priority: "medium" }
+            ].slice(0, Math.floor(Math.random() * 2) + 1),
             documents: [
               { name: "Lease Agreement.pdf", size: "2.4 MB" },
-              { name: "Property Inspection.pdf", size: "1.1 MB" },
-              { name: "Rent Receipts.pdf", size: "3.2 MB" }
+              { name: "Property Inspection Report.pdf", size: "1.1 MB" }
             ],
-            amenities: ['Gym', 'Pool', 'Parking', 'Security', 'Power Backup'],
+            amenities: ['Gym', 'Pool', 'Parking', 'Security'],
           };
         });
 
@@ -107,14 +151,12 @@ const OwnerDashboard = () => {
     }
   };
 
-  // Filter properties based on search
   const filteredProperties = properties.filter(property =>
     property.title?.toLowerCase().includes(searchTerm.toLowerCase()) ||
     property.location?.toLowerCase().includes(searchTerm.toLowerCase()) ||
     property.tenantName?.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  // Get unique tenants
   const tenants = properties.filter(p => p.tenantName).map(p => ({
     id: p._id,
     name: p.tenantName,
@@ -129,7 +171,6 @@ const OwnerDashboard = () => {
     lastPayment: p.lastPaymentDate
   }));
 
-  // Render different content based on active tab
   const renderContent = () => {
     switch(activeTab) {
       case 'properties':
@@ -145,202 +186,204 @@ const OwnerDashboard = () => {
     }
   };
 
-  // Dashboard Content
   const renderDashboardContent = () => (
     <>
-      {/* STATS GRID */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
         {stats.map((s, i) => (
-          <div key={i} className="bg-white p-6 rounded-[24px] border border-slate-100 shadow-sm hover:shadow-md transition-shadow">
-            <div className="flex justify-between items-start mb-4">
-              <div className="p-3 bg-slate-50 rounded-2xl">{s.icon}</div>
-              <div className="flex items-center gap-1 text-[11px] font-bold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-full">
-                <ArrowUpRight size={12} /> {s.change}
+          <div key={i} className="bg-white p-5 rounded-xl border border-gray-200">
+            <div className="flex items-start justify-between">
+              <div className="p-2 bg-gray-50 rounded-lg">
+                {s.icon}
               </div>
+              <span className={`text-xs font-medium px-2 py-1 rounded-full ${
+                s.trend === 'up' ? 'bg-green-50 text-green-700' :
+                s.trend === 'down' ? 'bg-red-50 text-red-700' :
+                'bg-gray-50 text-gray-700'
+              }`}>
+                {s.change}
+              </span>
             </div>
-            <p className="text-3xl font-black text-slate-900">{s.value}</p>
-            <div className="flex items-center gap-2 mt-1">
-              <span className="text-xs font-bold text-slate-400 uppercase tracking-wider">{s.label}</span>
-              <span className="text-[10px] text-slate-300 font-medium">• {s.sub}</span>
-            </div>
+            <p className="text-2xl font-semibold mt-3 text-gray-900">{s.value}</p>
+            <p className="text-sm text-gray-500 mt-1">{s.label}</p>
+            <p className="text-xs text-gray-400 mt-1">{s.sub}</p>
           </div>
         ))}
       </div>
 
-      <div className="grid grid-cols-1 xl:grid-cols-12 gap-8">
-        {/* PERFORMANCE ANALYTICS */}
-        <div className="xl:col-span-8 space-y-8">
-          <section className="bg-white p-8 rounded-[32px] border border-slate-100 shadow-sm">
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
-              <div>
-                <h2 className="text-xl font-black">Performance Analytics</h2>
-                <p className="text-sm text-slate-400 font-medium">Track your property performance over time</p>
-              </div>
-              <div className="flex items-center gap-4 bg-slate-50 p-1.5 rounded-xl text-xs font-bold">
-                <button className="px-4 py-2 bg-white shadow-sm rounded-lg text-green-600">Revenue</button>
-                <button className="px-4 py-2 text-slate-400">Occupancy</button>
-              </div>
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <div className="lg:col-span-2 space-y-6">
+          <div className="bg-white p-6 rounded-xl border border-gray-200">
+            <div className="flex items-center justify-between mb-6">
+              <h3 className="font-semibold text-gray-900">Revenue Overview</h3>
+              <select className="text-sm border border-gray-200 rounded-lg px-3 py-1.5 bg-white">
+                <option>Last 6 months</option>
+                <option>Last year</option>
+                <option>This year</option>
+              </select>
             </div>
             
-            {/* Chart Visualization */}
-            <div className="h-[300px] w-full relative flex flex-col justify-end gap-2">
-              <div className="flex items-end justify-between h-full px-4 border-b border-slate-100">
-                {[40, 65, 55, 85, 70, 95].map((h, i) => (
-                  <div key={i} className="group relative w-12 flex flex-col items-center">
-                    <div className="w-full bg-blue-100 rounded-t-lg transition-all group-hover:bg-blue-200" style={{ height: `${h-15}%` }}></div>
-                    <div className="w-full bg-green-600 rounded-t-lg -mt-2 shadow-lg shadow-blue-100 transition-all group-hover:bg-green-700" style={{ height: `${h}%` }}></div>
-                    <span className="mt-4 text-[10px] font-bold text-slate-400 uppercase tracking-widest">{['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'][i]}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </section>
-
-          {/* QUICK ACTIONS */}
-          <section>
-            <h2 className="text-xl font-black mb-6">Quick Actions</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              <ActionCard icon={<Plus />} title="List New Property" desc="Add a new rental property" color="bg-blue-600" onClick={() => navigate("/add-property")} />
-              <ActionCard icon={<Users />} title="Screen Tenants" desc="Review pending applications" badge="3 pending" color="bg-purple-600" />
-              <ActionCard icon={<CreditCard />} title="Collect Rent" desc="Send reminders & track" color="bg-emerald-600" />
-              <ActionCard icon={<FiTool />} title="Schedule Maintenance" desc="Coordinate property upkeep" badge="2 urgent" color="bg-orange-600" />
-              <ActionCard icon={<TrendingUp />} title="Market Analysis" desc="View rental market trends" color="bg-indigo-600" />
-              <ActionCard icon={<ClipboardCheck />} title="Generate Reports" desc="Create financial reports" color="bg-slate-700" />
-            </div>
-          </section>
-        </div>
-
-        {/* RIGHT SIDEBAR: RECENT ACTIVITY */}
-        <div className="xl:col-span-4 space-y-6">
-          <section className="bg-white p-8 rounded-[32px] border border-slate-100 shadow-sm">
-            <div className="flex items-center justify-between mb-8">
-              <h2 className="text-xl font-black">Recent Activity</h2>
-              <button className="text-xs font-bold text-green-600 hover:underline">View All</button>
-            </div>
-
-            <div className="space-y-8 relative before:content-[''] before:absolute before:left-5 before:top-2 before:bottom-2 before:w-[1px] before:bg-slate-100">
-              {recentActivity.map((act, i) => (
-                <div key={i} className="flex gap-4 relative z-10">
-                  <div className="w-10 h-10 rounded-full bg-white border border-slate-100 shadow-sm flex items-center justify-center shrink-0">
-                    {act.icon}
-                  </div>
-                  <div>
-                    <p className="text-sm font-bold text-slate-800 leading-snug">{act.text}</p>
-                    <div className="flex items-center gap-2 mt-1 text-slate-400">
-                      <Clock size={12} />
-                      <span className="text-[11px] font-medium">{act.time}</span>
-                    </div>
-                  </div>
+            <div className="h-48 flex items-end justify-between gap-2">
+              {[65, 45, 80, 55, 70, 85].map((h, i) => (
+                <div key={i} className="w-full flex flex-col items-center gap-2">
+                  <div 
+                    className="w-full bg-green-500 rounded-t-lg" 
+                    style={{ height: `${h}px` }}
+                  ></div>
+                  <span className="text-xs text-gray-500">
+                    {['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'][i]}
+                  </span>
                 </div>
               ))}
             </div>
-          </section>
+          </div>
 
-          {/* Portfolio Insights */}
-          {/* <div className="bg-white rounded-[32px] p-8 text-gray-800 relative overflow-hidden border border-slate-100">
-            <div className="relative z-10">
-              <h3 className="font-black text-xl mb-2">Portfolio Insights</h3>
-              <p className="text-slate-800 text-sm leading-relaxed mb-6">Your rental yield in the Downtown area is 12% higher than the local average. Consider increasing rates on renewal.</p>
-              <button className="bg-white text-green-600 px-6 py-2.5 rounded-xl font-black text-sm shadow-xl border border-green-200">Get Full Audit</button>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="bg-white p-5 rounded-xl border border-gray-200">
+              <div className="flex items-center gap-3 mb-3">
+                <div className="p-2 bg-blue-50 rounded-lg">
+                  <Home size={18} className="text-blue-600" />
+                </div>
+                <h4 className="font-medium text-gray-900">Quick actions</h4>
+              </div>
+              <button 
+                onClick={() => navigate("/add-property")}
+                className="w-full text-left px-3 py-2 hover:bg-gray-50 rounded-lg text-sm text-gray-700 flex items-center gap-2"
+              >
+                <Plus size={16} className="text-gray-400" /> Add new property
+              </button>
+              <button className="w-full text-left px-3 py-2 hover:bg-gray-50 rounded-lg text-sm text-gray-700 flex items-center gap-2">
+                <FileText size={16} className="text-gray-400" /> Generate rent receipts
+              </button>
+              <button className="w-full text-left px-3 py-2 hover:bg-gray-50 rounded-lg text-sm text-gray-700 flex items-center gap-2">
+                <MessageSquare size={16} className="text-gray-400" /> Send reminders
+              </button>
             </div>
-            <TrendingUp size={120} className="absolute -bottom-4 -right-4 text-blue-500/30 rotate-12" />
-          </div> */}
+
+            <div className="bg-white p-5 rounded-xl border border-gray-200">
+              <div className="flex items-center gap-3 mb-3">
+                <div className="p-2 bg-amber-50 rounded-lg">
+                  <AlertCircle size={18} className="text-amber-600" />
+                </div>
+                <h4 className="font-medium text-gray-900">Need attention</h4>
+              </div>
+              <div className="space-y-2">
+                <p className="text-sm text-gray-600">2 rent payments overdue</p>
+                <p className="text-sm text-gray-600">3 maintenance requests pending</p>
+                <p className="text-sm text-gray-600">1 lease expiring this month</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div className="bg-white p-6 rounded-xl border border-gray-200">
+          <div className="flex items-center justify-between mb-4">
+            <h3 className="font-semibold text-gray-900">Recent activity</h3>
+            <button className="text-sm text-blue-600 hover:text-blue-700">View all</button>
+          </div>
+          <div className="space-y-4">
+            {recentActivity.map((act, i) => (
+              <div key={i} className="flex gap-3">
+                <div className="mt-0.5">{act.icon}</div>
+                <div>
+                  <p className="text-sm text-gray-800">{act.text}</p>
+                  <p className="text-xs text-gray-500 mt-1">{act.time}</p>
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     </>
   );
 
-  // Properties Content
   const renderPropertiesContent = () => (
     <div className="space-y-6">
-      {/* Header with search and actions */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h2 className="text-2xl font-black text-slate-900">Your Properties</h2>
-          <p className="text-slate-500 mt-1">Manage and monitor all your listed properties</p>
+          <h2 className="text-xl font-semibold text-gray-900">Your properties</h2>
+          <p className="text-sm text-gray-500 mt-1">Manage and monitor your listed properties</p>
         </div>
         <div className="flex items-center gap-3">
           <div className="relative">
-            <Search size={18} className="absolute left-3 top-2.5 text-slate-400" />
+            <Search size={16} className="absolute left-3 top-2.5 text-gray-400" />
             <input
               type="text"
               placeholder="Search properties..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="pl-10 pr-4 py-2 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 w-64"
+              className="pl-9 pr-4 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-1 focus:ring-blue-500 w-64"
             />
           </div>
-          <div className="flex border border-slate-200 rounded-xl overflow-hidden">
+          <div className="flex border border-gray-200 rounded-lg overflow-hidden">
             <button
               onClick={() => setViewMode('grid')}
-              className={`p-2 ${viewMode === 'grid' ? 'bg-slate-900 text-white' : 'bg-white text-slate-600'}`}
+              className={`p-2 ${viewMode === 'grid' ? 'bg-gray-100' : 'bg-white'}`}
             >
-              <Grid size={18} />
+              <Grid size={18} className={viewMode === 'grid' ? 'text-gray-900' : 'text-gray-400'} />
             </button>
             <button
               onClick={() => setViewMode('list')}
-              className={`p-2 ${viewMode === 'list' ? 'bg-slate-900 text-white' : 'bg-white text-slate-600'}`}
+              className={`p-2 ${viewMode === 'list' ? 'bg-gray-100' : 'bg-white'}`}
             >
-              <List size={18} />
+              <List size={18} className={viewMode === 'list' ? 'text-gray-900' : 'text-gray-400'} />
             </button>
           </div>
-          <button className="p-2 border border-slate-200 rounded-xl hover:bg-slate-50">
-            <Filter size={18} className="text-slate-600" />
-          </button>
         </div>
       </div>
 
-      {/* Property Stats Summary */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-        <div className="bg-white p-4 rounded-xl border border-slate-100">
-          <p className="text-sm text-slate-500">Total Properties</p>
-          <p className="text-2xl font-bold text-slate-900">{properties.length}</p>
+        <div className="bg-white p-4 rounded-lg border border-gray-200">
+          <p className="text-sm text-gray-500">Total properties</p>
+          <p className="text-xl font-semibold text-gray-900 mt-1">{properties.length}</p>
         </div>
-        <div className="bg-white p-4 rounded-xl border border-slate-100">
-          <p className="text-sm text-slate-500">Occupied</p>
-          <p className="text-2xl font-bold text-green-600">{properties.filter(p => p.status === 'occupied').length}</p>
+        <div className="bg-white p-4 rounded-lg border border-gray-200">
+          <p className="text-sm text-gray-500">Occupied</p>
+          <p className="text-xl font-semibold text-green-600 mt-1">
+            {properties.filter(p => p.status === 'occupied').length}
+          </p>
         </div>
-        <div className="bg-white p-4 rounded-xl border border-slate-100">
-          <p className="text-sm text-slate-500">Vacant</p>
-          <p className="text-2xl font-bold text-orange-600">{properties.filter(p => p.status === 'vacant').length}</p>
+        <div className="bg-white p-4 rounded-lg border border-gray-200">
+          <p className="text-sm text-gray-500">Vacant</p>
+          <p className="text-xl font-semibold text-amber-600 mt-1">
+            {properties.filter(p => p.status === 'vacant').length}
+          </p>
         </div>
-        <div className="bg-white p-4 rounded-xl border border-slate-100">
-          <p className="text-sm text-slate-500">Under Maintenance</p>
-          <p className="text-2xl font-bold text-red-600">{properties.filter(p => p.status === 'maintenance').length}</p>
+        <div className="bg-white p-4 rounded-lg border border-gray-200">
+          <p className="text-sm text-gray-500">Under maintenance</p>
+          <p className="text-xl font-semibold text-orange-600 mt-1">
+            {properties.filter(p => p.status === 'maintenance').length}
+          </p>
         </div>
       </div>
 
-      {/* Properties Grid/List */}
       {loading ? (
         <div className="flex justify-center py-12">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-red-600"></div>
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900"></div>
         </div>
       ) : filteredProperties.length === 0 ? (
-        <div className="bg-white rounded-[32px] p-12 text-center border border-slate-100">
-          <Home size={48} className="mx-auto text-slate-300 mb-4" />
-          <h3 className="text-xl font-bold text-slate-700 mb-2">No properties found</h3>
-          <p className="text-slate-500 mb-6">Get started by adding your first property</p>
+        <div className="bg-white p-12 text-center rounded-xl border border-gray-200">
+          <Home size={40} className="mx-auto text-gray-300 mb-3" />
+          <h3 className="text-lg font-medium text-gray-900 mb-2">No properties found</h3>
+          <p className="text-gray-500 mb-4">Get started by adding your first property</p>
           <button
             onClick={() => navigate("/add-property")}
-            className="px-6 py-3 bg-red-600 text-white rounded-xl font-bold hover:bg-red-700 transition"
+            className="px-4 py-2 bg-gray-900 text-white rounded-lg text-sm hover:bg-gray-800"
           >
-            <Plus size={18} className="inline mr-2" />
-            Add New Property
+            <Plus size={16} className="inline mr-1" />
+            Add property
           </button>
         </div>
       ) : (
         <>
           {selectedProperty ? (
-            // Property Detail View
             <PropertyDetail 
               property={selectedProperty} 
               onBack={() => setSelectedProperty(null)} 
             />
           ) : (
-            // Grid/List View
             <div className={viewMode === 'grid' 
-              ? "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
-              : "space-y-4"
+              ? "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"
+              : "space-y-3"
             }>
               {filteredProperties.map((property) => (
                 <PropertyCard 
@@ -357,89 +400,78 @@ const OwnerDashboard = () => {
     </div>
   );
 
-  // Tenants Content with Indian Names
   const renderTenantsContent = () => (
     <div className="space-y-6">
       <div>
-        <h2 className="text-2xl font-black text-slate-900">Tenant Management</h2>
-        <p className="text-slate-500 mt-1">Manage all your tenants and their details</p>
+        <h2 className="text-xl font-semibold text-gray-900">Tenants</h2>
+        <p className="text-sm text-gray-500 mt-1">Manage your tenants and lease agreements</p>
       </div>
 
-      {/* Tenant Stats */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <div className="bg-white p-4 rounded-xl border border-slate-100">
-          <p className="text-sm text-slate-500">Total Tenants</p>
-          <p className="text-2xl font-bold text-slate-900">{tenants.length}</p>
+        <div className="bg-white p-4 rounded-lg border border-gray-200">
+          <p className="text-sm text-gray-500">Total tenants</p>
+          <p className="text-xl font-semibold text-gray-900 mt-1">{tenants.length}</p>
         </div>
-        <div className="bg-white p-4 rounded-xl border border-slate-100">
-          <p className="text-sm text-slate-500">Active Leases</p>
-          <p className="text-2xl font-bold text-green-600">{tenants.length}</p>
+        <div className="bg-white p-4 rounded-lg border border-gray-200">
+          <p className="text-sm text-gray-500">Active leases</p>
+          <p className="text-xl font-semibold text-green-600 mt-1">{tenants.length}</p>
         </div>
-        <div className="bg-white p-4 rounded-xl border border-slate-100">
-          <p className="text-sm text-slate-500">Lease Expiring Soon</p>
-          <p className="text-2xl font-bold text-orange-600">2</p>
+        <div className="bg-white p-4 rounded-lg border border-gray-200">
+          <p className="text-sm text-gray-500">Leases ending soon</p>
+          <p className="text-xl font-semibold text-amber-600 mt-1">2</p>
         </div>
       </div>
 
-      {/* Tenants List */}
-      <div className="bg-white rounded-[32px] border border-slate-100 overflow-hidden">
+      <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full">
-            <thead className="bg-slate-50">
+            <thead className="bg-gray-50 border-b border-gray-200">
               <tr>
-                <th className="text-left p-4 text-xs font-bold text-slate-500 uppercase tracking-wider">Tenant</th>
-                <th className="text-left p-4 text-xs font-bold text-slate-500 uppercase tracking-wider">Contact</th>
-                <th className="text-left p-4 text-xs font-bold text-slate-500 uppercase tracking-wider">Property</th>
-                <th className="text-left p-4 text-xs font-bold text-slate-500 uppercase tracking-wider">Rent</th>
-                <th className="text-left p-4 text-xs font-bold text-slate-500 uppercase tracking-wider">Lease End</th>
-                <th className="text-left p-4 text-xs font-bold text-slate-500 uppercase tracking-wider">Status</th>
-                <th className="text-left p-4 text-xs font-bold text-slate-500 uppercase tracking-wider">Actions</th>
+                <th className="text-left p-4 text-xs font-medium text-gray-500 uppercase">Tenant</th>
+                <th className="text-left p-4 text-xs font-medium text-gray-500 uppercase">Contact</th>
+                <th className="text-left p-4 text-xs font-medium text-gray-500 uppercase">Property</th>
+                <th className="text-left p-4 text-xs font-medium text-gray-500 uppercase">Rent</th>
+                <th className="text-left p-4 text-xs font-medium text-gray-500 uppercase">Lease end</th>
+                <th className="text-left p-4 text-xs font-medium text-gray-500 uppercase">Status</th>
+                <th className="text-left p-4 text-xs font-medium text-gray-500 uppercase"></th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-100">
+            <tbody className="divide-y divide-gray-200">
               {tenants.map((tenant, index) => (
-                <tr key={index} className="hover:bg-slate-50">
+                <tr key={index} className="hover:bg-gray-50">
                   <td className="p-4">
                     <div className="flex items-center gap-3">
-                      <img src={tenant.avatar} className="w-10 h-10 rounded-full" alt={tenant.name} />
+                      <img src={tenant.avatar} className="w-8 h-8 rounded-full" alt={tenant.name} />
                       <div>
-                        <p className="font-bold text-slate-900">{tenant.name}</p>
-                        <p className="text-xs text-slate-500">{tenant.occupation}</p>
+                        <p className="font-medium text-gray-900">{tenant.name}</p>
+                        <p className="text-xs text-gray-500">{tenant.occupation}</p>
                       </div>
                     </div>
                   </td>
                   <td className="p-4">
                     <div className="space-y-1">
-                      <p className="text-sm flex items-center gap-2"><Phone size={14} className="text-slate-400" /> {tenant.phone}</p>
-                      <p className="text-sm flex items-center gap-2"><Mail size={14} className="text-slate-400" /> {tenant.email}</p>
+                      <p className="text-sm text-gray-600">{tenant.phone}</p>
+                      <p className="text-sm text-gray-600">{tenant.email}</p>
                     </div>
                   </td>
                   <td className="p-4">
-                    <p className="font-medium text-slate-900">{tenant.property}</p>
+                    <p className="text-sm text-gray-900">{tenant.property}</p>
                   </td>
                   <td className="p-4">
-                    <p className="font-bold text-green-600">₹{tenant.rent}</p>
+                    <p className="font-medium text-gray-900">₹{tenant.rent}</p>
                   </td>
                   <td className="p-4">
-                    <div className="flex items-center gap-2">
-                      <CalendarClock size={14} className="text-slate-400" />
-                      <span className="text-sm">{tenant.leaseEnd}</span>
-                    </div>
+                    <p className="text-sm text-gray-600">{tenant.leaseEnd}</p>
                   </td>
                   <td className="p-4">
-                    <span className="px-3 py-1 bg-green-100 text-green-700 rounded-full text-xs font-bold">
+                    <span className="px-2 py-1 bg-green-50 text-green-700 rounded-full text-xs">
                       Active
                     </span>
                   </td>
                   <td className="p-4">
-                    <div className="flex gap-2">
-                      <button className="p-2 hover:bg-slate-100 rounded-lg transition">
-                        <MessageSquare size={16} className="text-slate-600" />
-                      </button>
-                      <button className="p-2 hover:bg-slate-100 rounded-lg transition">
-                        <FileText size={16} className="text-slate-600" />
-                      </button>
-                    </div>
+                    <button className="text-gray-400 hover:text-gray-600">
+                      <MessageSquare size={16} />
+                    </button>
                   </td>
                 </tr>
               ))}
@@ -450,62 +482,57 @@ const OwnerDashboard = () => {
     </div>
   );
 
-  // Maintenance Content
   const renderMaintenanceContent = () => (
     <div className="space-y-6">
       <div>
-        <h2 className="text-2xl font-black text-slate-900">Maintenance Requests</h2>
-        <p className="text-slate-500 mt-1">Track and manage all maintenance requests</p>
+        <h2 className="text-xl font-semibold text-gray-900">Maintenance</h2>
+        <p className="text-sm text-gray-500 mt-1">Track and manage maintenance requests</p>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-        <div className="bg-white p-4 rounded-xl border border-slate-100">
-          <p className="text-sm text-slate-500">Total Requests</p>
-          <p className="text-2xl font-bold text-slate-900">8</p>
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div className="bg-white p-4 rounded-lg border border-gray-200">
+          <p className="text-sm text-gray-500">Open requests</p>
+          <p className="text-xl font-semibold text-gray-900 mt-1">4</p>
         </div>
-        <div className="bg-white p-4 rounded-xl border border-slate-100">
-          <p className="text-sm text-slate-500">Pending</p>
-          <p className="text-2xl font-bold text-orange-600">3</p>
+        <div className="bg-white p-4 rounded-lg border border-gray-200">
+          <p className="text-sm text-gray-500">In progress</p>
+          <p className="text-xl font-semibold text-amber-600 mt-1">2</p>
         </div>
-        <div className="bg-white p-4 rounded-xl border border-slate-100">
-          <p className="text-sm text-slate-500">Completed this month</p>
-          <p className="text-2xl font-bold text-green-600">5</p>
+        <div className="bg-white p-4 rounded-lg border border-gray-200">
+          <p className="text-sm text-gray-500">Completed this month</p>
+          <p className="text-xl font-semibold text-green-600 mt-1">6</p>
         </div>
       </div>
 
-      <div className="bg-white rounded-[32px] border border-slate-100 overflow-hidden">
+      <div className="bg-white rounded-xl border border-gray-200 divide-y divide-gray-200">
         {properties.filter(p => p.maintenanceRequests > 0).map((property, index) => (
-          <div key={index} className="p-6 border-b border-slate-100 last:border-0">
-            <div className="flex items-center justify-between mb-4">
+          <div key={index} className="p-4">
+            <div className="flex items-start justify-between mb-3">
               <div>
-                <h3 className="font-bold text-slate-900">{property.title}</h3>
-                <p className="text-sm text-slate-500 flex items-center gap-1 mt-1">
-                  <MapPin size={14} /> {property.location}
-                </p>
+                <h3 className="font-medium text-gray-900">{property.title}</h3>
+                <p className="text-sm text-gray-500 mt-1">{property.location}</p>
               </div>
               {property.tenantName && (
-                <div className="text-right">
-                  <p className="text-sm font-medium text-slate-900">Reported by: {property.tenantName}</p>
-                  <p className="text-xs text-slate-500">{property.tenantPhone}</p>
-                </div>
+                <span className="text-xs text-gray-500">Reported by {property.tenantName}</span>
               )}
             </div>
 
-            <div className="space-y-3">
+            <div className="space-y-2">
               {property.maintenanceItems?.map((item, idx) => (
-                <div key={idx} className="flex items-center justify-between p-3 bg-slate-50 rounded-xl">
+                <div key={idx} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
                   <div className="flex items-center gap-3">
-                    <Wrench size={16} className="text-slate-500" />
-                    <span className="text-sm font-medium text-slate-900">{item.issue}</span>
+                    <Wrench size={14} className="text-gray-500" />
+                    <span className="text-sm text-gray-900">{item.issue}</span>
                   </div>
                   <div className="flex items-center gap-4">
                     <span className={`text-xs px-2 py-1 rounded-full ${
-                      item.status === 'pending' ? 'bg-orange-100 text-orange-700' : 'bg-green-100 text-green-700'
+                      item.status === 'pending' ? 'bg-amber-50 text-amber-700' : 
+                      item.status === 'in-progress' ? 'bg-blue-50 text-blue-700' :
+                      'bg-green-50 text-green-700'
                     }`}>
                       {item.status}
                     </span>
-                    <span className="text-xs text-slate-500">{item.date}</span>
-                    <button className="text-blue-600 text-xs font-bold hover:underline">Update</button>
+                    <span className="text-xs text-gray-500">{item.date}</span>
                   </div>
                 </div>
               ))}
@@ -516,53 +543,51 @@ const OwnerDashboard = () => {
     </div>
   );
 
-  // Finance Content
   const renderFinanceContent = () => (
     <div className="space-y-6">
       <div>
-        <h2 className="text-2xl font-black text-slate-900">Financial Overview</h2>
-        <p className="text-slate-500 mt-1">Track your earnings and manage finances</p>
+        <h2 className="text-xl font-semibold text-gray-900">Finances</h2>
+        <p className="text-sm text-gray-500 mt-1">Track earnings and manage finances</p>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-        <div className="bg-green-50 p-6 rounded-2xl border border-green-100">
-          <p className="text-sm text-green-600 mb-2">Total Revenue</p>
-          <p className="text-3xl font-black text-slate-900">₹24,580</p>
+        <div className="bg-white p-5 rounded-lg border border-gray-200">
+          <p className="text-sm text-gray-500 mb-1">Total revenue</p>
+          <p className="text-2xl font-semibold text-gray-900">₹24,580</p>
           <p className="text-xs text-green-600 mt-2">↑ 12.5% from last month</p>
         </div>
-        <div className="bg-orange-50 p-6 rounded-2xl border border-orange-100">
-          <p className="text-sm text-orange-600 mb-2">Pending Payments</p>
-          <p className="text-3xl font-black text-slate-900">₹3,200</p>
-          <p className="text-xs text-orange-600 mt-2">2 tenants pending</p>
+        <div className="bg-white p-5 rounded-lg border border-gray-200">
+          <p className="text-sm text-gray-500 mb-1">Pending payments</p>
+          <p className="text-2xl font-semibold text-amber-600">₹3,200</p>
+          <p className="text-xs text-gray-500 mt-2">From 2 tenants</p>
         </div>
-        <div className="bg-blue-50 p-6 rounded-2xl border border-blue-100">
-          <p className="text-sm text-green-600 mb-2">Security Deposits</p>
-          <p className="text-3xl font-black text-slate-900">₹16,000</p>
-          <p className="text-xs text-green-600 mt-2">Held for 4 tenants</p>
+        <div className="bg-white p-5 rounded-lg border border-gray-200">
+          <p className="text-sm text-gray-500 mb-1">Security deposits</p>
+          <p className="text-2xl font-semibold text-gray-900">₹16,000</p>
+          <p className="text-xs text-gray-500 mt-2">Held for 4 tenants</p>
         </div>
-        <div className="bg-purple-50 p-6 rounded-2xl border border-purple-100">
-          <p className="text-sm text-purple-600 mb-2">Maintenance Expenses</p>
-          <p className="text-3xl font-black text-slate-900">₹5,430</p>
-          <p className="text-xs text-purple-600 mt-2">This month</p>
+        <div className="bg-white p-5 rounded-lg border border-gray-200">
+          <p className="text-sm text-gray-500 mb-1">Maintenance expenses</p>
+          <p className="text-2xl font-semibold text-orange-600">₹5,430</p>
+          <p className="text-xs text-gray-500 mt-2">This month</p>
         </div>
       </div>
 
-      {/* Recent Transactions */}
-      <div className="bg-white rounded-[32px] p-6 border border-slate-100">
-        <h3 className="text-lg font-black mb-4">Recent Transactions</h3>
+      <div className="bg-white rounded-xl border border-gray-200 p-5">
+        <h3 className="font-medium text-gray-900 mb-4">Recent transactions</h3>
         <div className="space-y-3">
           {tenants.slice(0, 4).map((tenant, index) => (
-            <div key={index} className="flex items-center justify-between p-3 bg-slate-50 rounded-xl">
+            <div key={index} className="flex items-center justify-between py-2">
               <div className="flex items-center gap-3">
-                <CheckCircle2 size={20} className="text-green-500" />
+                <CheckCircle2 size={16} className="text-green-500" />
                 <div>
-                  <p className="font-medium text-slate-900">Rent received from {tenant.name}</p>
-                  <p className="text-xs text-slate-500">{tenant.property} • March 2024</p>
+                  <p className="text-sm font-medium text-gray-900">Rent from {tenant.name}</p>
+                  <p className="text-xs text-gray-500">{tenant.property}</p>
                 </div>
               </div>
               <div className="text-right">
-                <p className="font-bold text-green-600">₹{tenant.rent}</p>
-                <p className="text-xs text-slate-400">5 Mar 2024</p>
+                <p className="text-sm font-medium text-gray-900">₹{tenant.rent}</p>
+                <p className="text-xs text-gray-500">5 Mar 2026</p>
               </div>
             </div>
           ))}
@@ -572,19 +597,21 @@ const OwnerDashboard = () => {
   );
 
   return (
-    <div className="min-h-screen bg-[#F8FAFC] font-sans text-slate-900">
+    <div className="min-h-screen bg-gray-50">
       {/* Sidebar */}
-      <aside className="fixed left-0 top-0 h-full w-64 bg-white text-slate-700 hidden lg:flex flex-col p-6 z-50 border-r border-slate-100">
-        <div className="flex items-center gap-3 mb-10 px-2">
-          <div className="bg-slate-900 p-2 rounded-lg">
-            <Home size={24} className="text-white" />
+      <aside className="fixed left-0 top-0 h-full w-56 bg-white border-r border-gray-200 hidden lg:block">
+        <div className="p-5 border-b border-gray-200">
+          <div className="flex items-center gap-2">
+            <div className="w-7 h-7 bg-gray-900 rounded flex items-center justify-center">
+              <Home size={16} className="text-white" />
+            </div>
+            <span className="font-semibold text-gray-900">Owner Dashboard</span>
           </div>
-          <span className="text-xl font-black tracking-tight">Admin Panel</span>
         </div>
         
-        <nav className="space-y-1 flex-1">
+        <nav className="p-3">
           <NavItem 
-            icon={<BarChart3 size={20} />} 
+            icon={<BarChart3 size={18} />} 
             label="Dashboard" 
             active={activeTab === 'dashboard'}
             onClick={() => {
@@ -593,7 +620,7 @@ const OwnerDashboard = () => {
             }}
           />
           <NavItem 
-            icon={<Home size={20} />} 
+            icon={<Home size={18} />} 
             label="Properties" 
             active={activeTab === 'properties'}
             onClick={() => {
@@ -602,7 +629,7 @@ const OwnerDashboard = () => {
             }}
           />
           <NavItem 
-            icon={<Users size={20} />} 
+            icon={<Users size={18} />} 
             label="Tenants" 
             active={activeTab === 'tenants'}
             onClick={() => {
@@ -611,7 +638,7 @@ const OwnerDashboard = () => {
             }}
           />
           <NavItem 
-            icon={<FiTool size={20} />} 
+            icon={<Wrench size={18} />} 
             label="Maintenance" 
             active={activeTab === 'maintenance'}
             onClick={() => {
@@ -620,103 +647,86 @@ const OwnerDashboard = () => {
             }}
           />
           <NavItem 
-            icon={<FileText size={20} />} 
-            label="Finance" 
+            icon={<FileText size={18} />} 
+            label="Finances" 
             active={activeTab === 'finance'}
             onClick={() => {
               setActiveTab('finance');
               setSelectedProperty(null);
             }}
           />
+          <div className="border-t border-gray-200 my-4"></div>
+          <NavItem icon={<Settings size={18} />} label="Settings" />
         </nav>
-
-        <div className="pt-6 border-t border-slate-200">
-          <NavItem icon={<Settings size={20} />} label="Settings" />
-        </div>
       </aside>
 
-      {/* Main Content */}
-      <main className="lg:ml-64 p-4 lg:p-8">
-        {/* Header */}
-        <header className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-10">
+      <main className="lg:ml-56 p-6">
+        <header className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
           <div>
-            <h1 className="text-3xl font-black text-slate-900">
-              {activeTab === 'dashboard' && 'Owner Dashboard'}
-              {activeTab === 'properties' && 'Property Management'}
-              {activeTab === 'tenants' && 'Tenant Management'}
-              {activeTab === 'maintenance' && 'Maintenance Requests'}
-              {activeTab === 'finance' && 'Financial Overview'}
+            <h1 className="text-xl font-semibold text-gray-900">
+              {activeTab === 'dashboard' && 'Dashboard'}
+              {activeTab === 'properties' && 'Properties'}
+              {activeTab === 'tenants' && 'Tenants'}
+              {activeTab === 'maintenance' && 'Maintenance'}
+              {activeTab === 'finance' && 'Finances'}
             </h1>
-            <p className="text-slate-500 mt-1">
-              {activeTab === 'dashboard' && 'Manage your property portfolio with comprehensive analytics'}
-              {activeTab === 'properties' && 'View and manage all your listed properties'}
-              {activeTab === 'tenants' && 'Manage your tenants and lease agreements'}
-              {activeTab === 'maintenance' && 'Track and manage maintenance requests'}
-              {activeTab === 'finance' && 'Monitor your financial performance'}
-            </p>
           </div>
           <div className="flex items-center gap-3">
-            <button className="flex items-center gap-2 px-4 py-2.5 bg-white border border-slate-200 rounded-xl font-bold text-sm text-slate-600 hover:bg-slate-50 transition-all">
-              <Download size={18} /> Export Report
+            <button className="flex items-center gap-2 px-3 py-2 border border-gray-200 rounded-lg text-sm text-gray-700 hover:bg-gray-50">
+              <Download size={16} /> Export
             </button>
             <button 
               onClick={()=>navigate("/add-property")} 
-              className="flex items-center gap-2 px-5 py-2.5 bg-green-600 text-white rounded-xl font-black text-sm shadow-lg hover:bg-green-700 transition-all"
+              className="flex items-center gap-2 px-3 py-2 bg-gray-900 text-white rounded-lg text-sm hover:bg-gray-800"
             >
-              <Plus size={18} /> Add Property
+              <Plus size={16} /> Add property
             </button>
           </div>
         </header>
 
-        {/* Dynamic Content */}
         {renderContent()}
       </main>
     </div>
   );
 };
 
-// Property Card Component
 const PropertyCard = ({ property, viewMode, onClick }) => {
   if (viewMode === 'list') {
     return (
       <div 
-        className="bg-white p-4 rounded-xl border border-slate-100 shadow-sm hover:shadow-md transition-all cursor-pointer"
+        className="bg-white p-4 rounded-lg border border-gray-200 hover:border-gray-300 cursor-pointer transition"
         onClick={onClick}
       >
         <div className="flex items-center gap-4">
-          <div className="w-20 h-20 rounded-lg overflow-hidden">
+          <div className="w-16 h-16 rounded bg-gray-100 overflow-hidden flex-shrink-0">
             {property.images && property.images[0] ? (
               <img src={property.images[0]} alt={property.title} className="w-full h-full object-cover" />
             ) : (
-              <div className="w-full h-full bg-slate-200 flex items-center justify-center">
-                <Home size={24} className="text-slate-400" />
+              <div className="w-full h-full flex items-center justify-center">
+                <Home size={24} className="text-gray-400" />
               </div>
             )}
           </div>
-          <div className="flex-1">
+          <div className="flex-1 min-w-0">
             <div className="flex items-center gap-2 mb-1">
-              <h3 className="font-bold text-slate-900">{property.title}</h3>
+              <h3 className="font-medium text-gray-900 truncate">{property.title}</h3>
               <span className={`text-xs px-2 py-0.5 rounded-full ${
-                property.status === 'occupied' ? 'bg-green-100 text-green-700' :
-                property.status === 'vacant' ? 'bg-orange-100 text-orange-700' :
-                'bg-red-100 text-red-700'
+                property.status === 'occupied' ? 'bg-green-50 text-green-700' :
+                property.status === 'vacant' ? 'bg-amber-50 text-amber-700' :
+                'bg-orange-50 text-orange-700'
               }`}>
                 {property.status}
               </span>
             </div>
-            <p className="text-sm text-slate-500 flex items-center gap-1">
-              <MapPin size={14} /> {property.location || "Location not specified"}
-            </p>
-            <div className="flex items-center gap-4 mt-2 text-sm">
-              <span className="font-bold text-slate-900">₹{property.price}/month</span>
+            <p className="text-sm text-gray-500 truncate">{property.location || "Location not specified"}</p>
+            <div className="flex items-center gap-4 mt-2">
+              <span className="text-sm font-medium text-gray-900">₹{property.price}/mo</span>
               {property.tenantName && (
-                <span className="text-slate-500 flex items-center gap-1">
-                  <Users size={14} /> {property.tenantName}
-                </span>
+                <span className="text-xs text-gray-500">{property.tenantName}</span>
               )}
             </div>
           </div>
-          <ChevronRight size={20} className="text-slate-400" />
+          <ChevronRight size={18} className="text-gray-400 flex-shrink-0" />
         </div>
       </div>
     );
@@ -724,45 +734,38 @@ const PropertyCard = ({ property, viewMode, onClick }) => {
 
   return (
     <div 
-      className="bg-white rounded-xl border border-slate-100 shadow-sm hover:shadow-md transition-all cursor-pointer overflow-hidden"
+      className="bg-white rounded-lg border border-gray-200 hover:border-gray-300 cursor-pointer transition overflow-hidden"
       onClick={onClick}
     >
-      <div className="relative h-48">
+      <div className="h-40 bg-gray-100 relative">
         {property.images && property.images[0] ? (
           <img src={property.images[0]} alt={property.title} className="w-full h-full object-cover" />
         ) : (
-          <div className="w-full h-full bg-slate-200 flex items-center justify-center">
-            <Home size={40} className="text-slate-400" />
+          <div className="w-full h-full flex items-center justify-center">
+            <Home size={32} className="text-gray-400" />
           </div>
         )}
-        <div className="absolute top-3 right-3">
-          <span className={`px-2 py-1 text-xs font-bold rounded-full ${
-            property.status === 'occupied' ? 'bg-green-100 text-green-700' :
-            property.status === 'vacant' ? 'bg-orange-100 text-orange-700' :
-            'bg-red-100 text-red-700'
+        <div className="absolute top-2 right-2">
+          <span className={`text-xs px-2 py-1 rounded-full ${
+            property.status === 'occupied' ? 'bg-green-50 text-green-700' :
+            property.status === 'vacant' ? 'bg-amber-50 text-amber-700' :
+            'bg-orange-50 text-orange-700'
           }`}>
             {property.status}
           </span>
         </div>
-        <div className="absolute bottom-3 left-3 bg-black/70 text-white px-2 py-1 rounded text-xs flex items-center gap-1">
-          <Eye size={12} /> {property.views} views
-        </div>
       </div>
       <div className="p-4">
-        <h3 className="font-bold text-slate-900 mb-1">{property.title}</h3>
-        <p className="text-sm text-slate-500 flex items-center gap-1 mb-2">
-          <MapPin size={14} /> {property.location || "Location not specified"}
-        </p>
+        <h3 className="font-medium text-gray-900 mb-1">{property.title}</h3>
+        <p className="text-sm text-gray-500 mb-2 truncate">{property.location || "Location not specified"}</p>
         {property.tenantName && (
-          <p className="text-xs text-slate-600 mb-2 flex items-center gap-1">
-            <Users size={12} /> Tenant: {property.tenantName}
-          </p>
+          <p className="text-xs text-gray-600 mb-2">Tenant: {property.tenantName}</p>
         )}
         <div className="flex items-center justify-between">
-          <span className="font-bold text-green-600">₹{property.price}/month</span>
+          <span className="font-medium text-gray-900">₹{property.price}/mo</span>
           {property.maintenanceRequests > 0 && (
-            <span className="text-xs text-red-600 bg-red-50 px-2 py-1 rounded-full">
-              {property.maintenanceRequests} maintenance
+            <span className="text-xs text-orange-600 bg-orange-50 px-2 py-1 rounded">
+              {property.maintenanceRequests} request{property.maintenanceRequests > 1 ? 's' : ''}
             </span>
           )}
         </div>
@@ -771,167 +774,135 @@ const PropertyCard = ({ property, viewMode, onClick }) => {
   );
 };
 
-// Property Detail Component
 const PropertyDetail = ({ property, onBack }) => {
   const navigate = useNavigate();
  
-  const handleDelete = async () =>{
-    try {
-      const res = await axios.delete(`http://localhost:5000/api/auth/v1/listings/${(property._id)}`)
-
-      console.log(res.data)
-      console.log("listing deleted successfully")
-      alert("Listing deleted successfull")
-    } catch (error) {
-      console.log(error.message)
-      console.log("Failed to deleted listings")
-      
+  const handleDelete = async () => {
+    if (window.confirm('Are you sure you want to delete this property?')) {
+      try {
+        const res = await axios.delete(`http://localhost:5000/api/auth/v1/listings/${property._id}`);
+        console.log(res.data);
+        alert('Property deleted successfully');
+        onBack();
+      } catch (error) {
+        console.log(error.message);
+        alert('Failed to delete property');
+      }
     }
-  }
+  };
 
-  //  const handleupdate = async () =>{
-  //   try {
-  //     const res = await axios.put(`http://localhost:5000/api/auth/v1/listings/${(property._id)}`)
-
-  //     console.log(res.data)
-  //     console.log("listing updated  successfully")
-  //     alert("Listing update successfull")
-  //   } catch (error) {
-  //     console.log(error.message)
-  //     console.log("Failed to update listings")
-      
-  //   }
-  // }
   return (
-  <div className="bg-white rounded-[32px] border border-slate-100 p-8">
-    <button onClick={onBack} className="flex items-center gap-2 text-slate-600 hover:text-slate-900 mb-6">
-      <ChevronRight size={20} className="rotate-180" />
-      <span>Back to Properties</span>
-    </button>
+    <div className="bg-white rounded-xl border border-gray-200 p-6">
+      <button 
+        onClick={onBack} 
+        className="flex items-center gap-2 text-gray-600 hover:text-gray-900 mb-6"
+      >
+        <ChevronRight size={18} className="rotate-180" />
+        <span className="text-sm">Back</span>
+      </button>
 
-    <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-      {/* Left Column - Images */}
-      <div>
-        <div className="rounded-2xl overflow-hidden mb-4 h-80">
-          {property.images && property.images[0] ? (
-            <img src={property.images[0]} alt={property.title} className="w-full h-full object-cover" />
-          ) : (
-            <div className="w-full h-full bg-slate-200 flex items-center justify-center">
-              <Home size={60} className="text-slate-400" />
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <div>
+          <div className="rounded-lg overflow-hidden mb-3 h-64 bg-gray-100">
+            {property.images && property.images[0] ? (
+              <img src={property.images[0]} alt={property.title} className="w-full h-full object-cover" />
+            ) : (
+              <div className="w-full h-full flex items-center justify-center">
+                <Home size={48} className="text-gray-400" />
+              </div>
+            )}
+          </div>
+          {property.images && property.images.length > 1 && (
+            <div className="grid grid-cols-4 gap-2">
+              {property.images.slice(1, 5).map((img, idx) => (
+                <div key={idx} className="h-16 rounded-lg overflow-hidden bg-gray-100">
+                  <img src={img} alt="" className="w-full h-full object-cover" />
+                </div>
+              ))}
             </div>
           )}
         </div>
-        <div className="grid grid-cols-4 gap-2">
-          {property.images?.slice(1, 5).map((img, idx) => (
-            <div key={idx} className="h-20 rounded-lg overflow-hidden">
-              <img src={img} alt={`${property.title} ${idx + 2}`} className="w-full h-full object-cover" />
+
+        <div>
+          <div className="flex items-start justify-between mb-4">
+            <h2 className="text-xl font-semibold text-gray-900">{property.title}</h2>
+            <span className={`text-xs px-3 py-1 rounded-full ${
+              property.status === 'occupied' ? 'bg-green-50 text-green-700' :
+              property.status === 'vacant' ? 'bg-amber-50 text-amber-700' :
+              'bg-orange-50 text-orange-700'
+            }`}>
+              {property.status}
+            </span>
+          </div>
+
+          <p className="text-sm text-gray-500 flex items-center gap-1 mb-6">
+            <MapPin size={14} /> {property.location || "Location not specified"}
+          </p>
+
+          <div className="grid grid-cols-2 gap-4 mb-6">
+            <div className="p-4 bg-gray-50 rounded-lg">
+              <p className="text-xs text-gray-500 mb-1">Monthly rent</p>
+              <p className="text-lg font-semibold text-gray-900">₹{property.price}</p>
             </div>
-          ))}
-        </div>
-      </div>
-
-      {/* Right Column - Details */}
-      <div>
-        <div className="flex items-center justify-between mb-4">
-          <h2 className="text-2xl font-black text-slate-900">{property.title}</h2>
-          <span className={`px-3 py-1 rounded-full text-sm font-bold ${
-            property.status === 'occupied' ? 'bg-green-100 text-green-700' :
-            property.status === 'vacant' ? 'bg-orange-100 text-orange-700' :
-            'bg-red-100 text-red-700'
-          }`}>
-            {property.status}
-          </span>
-        </div>
-
-        <p className="text-slate-500 flex items-center gap-1 mb-6">
-          <MapPin size={16} /> {property.location || "Location not specified"}
-        </p>
-
-        <div className="grid grid-cols-2 gap-4 mb-6">
-          <div className="p-4 bg-slate-50 rounded-xl">
-            <p className="text-sm text-slate-500 mb-1">Monthly Rent</p>
-            <p className="text-xl font-bold text-green-600">₹{property.price}</p>
+            <div className="p-4 bg-gray-50 rounded-lg">
+              <p className="text-xs text-gray-500 mb-1">Total views</p>
+              <p className="text-lg font-semibold text-gray-900">{property.views}</p>
+            </div>
           </div>
-          <div className="p-4 bg-slate-50 rounded-xl">
-            <p className="text-sm text-slate-500 mb-1">Total Views</p>
-            <p className="text-xl font-bold text-slate-900">{property.views}</p>
-          </div>
-        </div>
 
-        {property.tenantName && (
-          <div className="mb-6 p-4 bg-blue-50 rounded-xl">
-            <h3 className="font-bold text-slate-900 mb-3">Current Tenant</h3>
-            <div className="flex items-center gap-3 mb-3">
-              <img src={property.tenantAvatar} className="w-12 h-12 rounded-full" alt="tenant" />
-              <div>
-                <p className="font-bold text-slate-900">{property.tenantName}</p>
-                <p className="text-sm text-slate-600">{property.tenantOccupation}</p>
+          {property.tenantName && (
+            <div className="mb-6 p-4 bg-blue-50 rounded-lg">
+              <h3 className="font-medium text-gray-900 mb-3">Current tenant</h3>
+              <div className="flex items-center gap-3 mb-3">
+                <img src={property.tenantAvatar} className="w-10 h-10 rounded-full" alt="" />
+                <div>
+                  <p className="font-medium text-gray-900">{property.tenantName}</p>
+                  <p className="text-sm text-gray-600">{property.tenantOccupation}</p>
+                </div>
+              </div>
+              <div className="grid grid-cols-2 gap-2 text-sm">
+                <p className="text-gray-600">{property.tenantPhone}</p>
+                <p className="text-gray-600">{property.tenantEmail}</p>
+                <p className="text-gray-600">Lease ends: {property.leaseEnd}</p>
+                <p className="text-gray-600">Security: ₹{property.securityDeposit}</p>
               </div>
             </div>
-            <div className="grid grid-cols-2 gap-2 text-sm">
-              <p className="flex items-center gap-2"><Phone size={14} className="text-slate-500" /> {property.tenantPhone}</p>
-              <p className="flex items-center gap-2"><Mail size={14} className="text-slate-500" /> {property.tenantEmail}</p>
-              <p className="flex items-center gap-2"><Calendar size={14} className="text-slate-500" /> Lease: {property.leaseStart} - {property.leaseEnd}</p>
-              <p className="flex items-center gap-2"><DollarSign size={14} className="text-slate-500" /> Security: ₹{property.securityDeposit}</p>
-            </div>
+          )}
+
+          <div className="mb-6">
+            <h3 className="font-medium text-gray-900 mb-2">Description</h3>
+            <p className="text-sm text-gray-600">{property.description}</p>
           </div>
-        )}
 
-        <div className="mb-6">
-          <h3 className="font-bold text-slate-900 mb-3">Description</h3>
-          <p className="text-slate-600">{property.description}</p>
-        </div>
-
-        <div className="mb-6">
-          <h3 className="font-bold text-slate-900 mb-3">Amenities</h3>
-          <div className="flex flex-wrap gap-2">
-            {property.amenities?.map((item, idx) => (
-              <span key={idx} className="px-3 py-1 bg-slate-100 rounded-full text-sm text-slate-600">
-                {item}
-              </span>
-            ))}
+          <div className="flex gap-3">
+            <button 
+              onClick={() => navigate("/add-property")} 
+              className="flex-1 px-4 py-2 bg-gray-900 text-white rounded-lg text-sm hover:bg-gray-800"
+            >
+              Edit
+            </button>
+            <button 
+              onClick={handleDelete} 
+              className="px-4 py-2 border border-gray-200 text-gray-700 rounded-lg text-sm hover:bg-gray-50"
+            >
+              Delete
+            </button>
           </div>
-        </div>
-
-        <div className="flex gap-3">
-          <button onClick={()=>navigate("/add-property")} className="flex-1 px-6 py-3 bg-red-600 text-white rounded-xl font-bold hover:bg-red-700 transition">
-            Edit Property
-          </button>
-          <button onClick={handleDelete} className="px-6 py-3 border border-red-200 text-red-600 rounded-xl font-bold hover:bg-red-50 transition">
-            Delete
-          </button>
         </div>
       </div>
     </div>
-  </div>
-  )
+  );
 };
 
-// Navigation Item Component
 const NavItem = ({ icon, label, active = false, onClick }) => (
   <button 
     onClick={onClick}
-    className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl font-bold text-sm transition-all ${
-      active ? 'bg-slate-900 text-white shadow-lg' : 'text-slate-400 hover:bg-slate-100 hover:text-slate-900'
+    className={`w-full flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition mb-1 ${
+      active ? 'bg-gray-100 text-gray-900' : 'text-gray-600 hover:bg-gray-50'
     }`}
   >
     {icon} <span>{label}</span>
   </button>
-);
-
-// Action Card Component
-const ActionCard = ({ icon, title, desc, badge, color, onClick }) => (
-  <div 
-    onClick={onClick}
-    className="bg-white p-5 rounded-2xl border border-slate-100 shadow-sm hover:border-blue-200 cursor-pointer transition-all group"
-  >
-    <div className={`w-10 h-10 ${color} text-white rounded-xl flex items-center justify-center mb-4 shadow-lg group-hover:scale-110 transition-transform`}>
-      {React.cloneElement(icon, { size: 20 })}
-    </div>
-    {badge && <span className="text-[9px] font-black uppercase text-red-600 bg-red-50 px-2 py-0.5 rounded-full mb-2 inline-block tracking-widest">{badge}</span>}
-    <h3 className="text-sm font-black text-slate-800 mb-1">{title}</h3>
-    <p className="text-[11px] text-slate-400 font-medium">{desc}</p>
-  </div>
 );
 
 export default OwnerDashboard;
