@@ -2,12 +2,12 @@ import { FaBrain, FaShieldAlt, FaUsers, FaCheck } from "react-icons/fa";
 
 export default function WhyChoose() {
   return (
-    <section className="bg-gray-50 py-24 px-6 lg:px-16">
+    <section className="bg-gray-50 py-14 px-6 lg:px-16">
       
       {/* Heading */}
       <div className="text-center max-w-3xl mx-auto">
         <h2 className="text-3xl sm:text-4xl font-bold text-gray-900">
-          Why Choose Toletforrent?
+          Why Choose <span className="text-red-400 cursor-pointer text-5xl">Toletforrent?</span>
         </h2>
         <p className="mt-4 text-lg text-gray-600">
           We've reimagined the rental experience with cutting-edge technology,

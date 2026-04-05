@@ -56,7 +56,7 @@ function LocationComponent() {
           className={`p-2 rounded-full ${loading ? "bg-blue-100 animate-pulse" : "bg-blue-50"}`}
         >
           <FaLocationCrosshairs
-            className={`text-lg ${loading ? "text-blue-600" : "text-blue-500"}`}
+            className={`text-lg ${loading ? "text-black" : "text-black"}`}
           />
         </div>
 

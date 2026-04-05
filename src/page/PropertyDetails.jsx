@@ -82,6 +82,8 @@ const PropertyDetail = () => {
     duration:"",
   })
 
+  
+
   // Mock reviews
   const mockReviews = [
     {
@@ -285,11 +287,14 @@ const PropertyDetail = () => {
         },
       }
     );
+    setLoading(true)
+ 
 
     console.log("success", res.data);
     alert("Visit request sent successfully!");
   } catch (error) {
     console.error(error.response?.data || error.message);
+    setLoading(false);
   }
 };
  

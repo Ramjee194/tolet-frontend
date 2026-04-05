@@ -12,24 +12,15 @@ import {
   Clock,
   Shield,
   Award,
-  Wifi,
-  Coffee,
   Car,
-  Tv,
   Plus,
   Minus,
-  Heart,
   Eye,
   Users,
   Calendar,
-  MessageSquare,
-  ChevronLeft,
-  ChevronRight,
-  Search,
   Bed,
   Bath,
   Maximize,
-  MessageCircle,
   ChevronRight as ChevronRightIcon,
 } from "lucide-react";
 import axios from "axios";
@@ -38,7 +29,7 @@ import PropertySkeleton from "../components/property/PropertySkeleton";
 import SearchBar from "../components/property/SearchBar";
 import { Footer } from "../components/layout/Footer";
 
-// Leaflet imports
+// Leaflet imports (unchanged)
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
@@ -54,11 +45,9 @@ L.Icon.Default.mergeOptions({
 });
 
 // ----------------------------------------------------------------------
-// Professional Property Card Component (inline)
+// Professional Property Card Component (unchanged)
 // ----------------------------------------------------------------------
-// Professional Property Card Component (inline) – customized with your colors
 const ProfessionalPropertyCard = ({ property, onClick }) => {
-  // Fallback values in case some fields are missing – adjust based on your actual data structure
   const {
     _id,
     title = "Luxury 3BR Penthouse with Terrace",
@@ -69,7 +58,6 @@ const ProfessionalPropertyCard = ({ property, onClick }) => {
     beds = 3,
     baths = 3,
     sqft = 2200,
-    // host = listing.ownerId?.name,
     hostResponse = "Instant response",
     communityRating = 4.8,
     amenities = ["Terrace", "Fireplace", "Wine Cellar"],
@@ -82,33 +70,19 @@ const ProfessionalPropertyCard = ({ property, onClick }) => {
   } = property;
 
   const host = property?.ownerId?.name || "";
-  (property.profileImage, console.log(property));
-
-  console.log("PROPERTY:", property);
-  console.log("OWNER:", property?.ownerId);
-  console.log("PROFILE IMAGE:", property?.ownerId?.profileImage);
 
   const handleViewDetails = (e) => {
     e.stopPropagation();
     onClick();
   };
 
-  const handleMessage = (e) => {
-    e.stopPropagation();
-    // Replace with your actual message logic (e.g., open chat modal)
-    alert(`Message ${host} about ${title}`);
-  };
-
   return (
     <div className="group relative bg-white rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden border border-gray-100">
-      {/* Featured label – using red gradient from your newsletter */}
       {featured && (
         <div className="absolute top-3 left-3 z-10 bg-green-500 text-white text-xs font-semibold px-3 py-1 rounded-full flex items-center gap-1 shadow-md">
           Approved
         </div>
       )}
-
-      {/* Image section */}
       <div className="relative h-48 overflow-hidden bg-gray-200">
         <img
           src={images[0]}
@@ -119,7 +93,6 @@ const ProfessionalPropertyCard = ({ property, onClick }) => {
               "https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=500";
           }}
         />
-        {/* Badges on image – green for verified, red for instant book (to match your theme) */}
         <div className="absolute top-3 right-3 flex gap-2">
           {verified && (
             <span className="bg-green-600 text-white text-xs font-semibold px-2 py-1 rounded-md shadow-md">
@@ -133,10 +106,7 @@ const ProfessionalPropertyCard = ({ property, onClick }) => {
           )}
         </div>
       </div>
-
-      {/* Content */}
       <div className="p-4">
-        {/* Price and rating */}
         <div className="flex justify-between items-start mb-2">
           <div>
             <span className="text-2xl font-bold text-slate-900">
@@ -152,8 +122,6 @@ const ProfessionalPropertyCard = ({ property, onClick }) => {
             <span className="text-slate-400 text-xs">({reviews})</span>
           </div>
         </div>
-
-        {/* Title and location */}
         <h3 className="font-semibold text-slate-900 text-lg leading-tight mb-1 line-clamp-1">
           {title}
         </h3>
@@ -161,8 +129,6 @@ const ProfessionalPropertyCard = ({ property, onClick }) => {
           <MapPin size={14} />
           <span className="truncate">{location}</span>
         </div>
-
-        {/* Property details (beds, baths, sqft) */}
         <div className="flex items-center gap-4 text-slate-600 text-sm border-y border-slate-100 py-3 mb-3">
           <div className="flex items-center gap-1">
             <Bed size={16} />
@@ -177,11 +143,8 @@ const ProfessionalPropertyCard = ({ property, onClick }) => {
             <span>{sqft} sqft</span>
           </div>
         </div>
-
-        {/* Host info */}
         <div className="flex items-center justify-between mb-2">
           <div className="flex items-center gap-3">
-            {/* Profile Image */}
             {property?.profileImage ? (
               <img
                 src={property.profileImage}
@@ -193,19 +156,14 @@ const ProfessionalPropertyCard = ({ property, onClick }) => {
                 {host?.charAt(0) || "H"}
               </div>
             )}
-
-            {/* Host Info */}
             <div>
               <p className="font-medium text-sm">{host}</p>
-
               <p className="text-xs text-green-600 flex items-center gap-1">
                 <span className="w-1.5 h-1.5 bg-green-500 rounded-full"></span>
                 {hostResponse}
               </p>
             </div>
           </div>
-
-          {/* Community Rating */}
           <div className="text-right">
             <p className="text-xs text-slate-500">Community</p>
             <p className="font-semibold text-sm text-slate-700">
@@ -213,8 +171,6 @@ const ProfessionalPropertyCard = ({ property, onClick }) => {
             </p>
           </div>
         </div>
-
-        {/* Amenities */}
         <div className="flex flex-wrap items-center gap-2 mb-4">
           {amenities.slice(0, 3).map((item, idx) => (
             <span
@@ -230,16 +186,7 @@ const ProfessionalPropertyCard = ({ property, onClick }) => {
             </span>
           )}
         </div>
-
-        {/* Action buttons */}
         <div className="flex items-center gap-3">
-          {/* <button
-            onClick={handleMessage}
-            className="flex-1 bg-green-600 hover:bg-green-700 text-white font-medium py-2.5 rounded-xl transition flex items-center justify-center gap-2 text-sm shadow-sm"
-          >
-            <MessageCircle size={16} />
-            Message
-          </button> */}
           <button
             onClick={handleViewDetails}
             className="flex-1 border border-red-200 hover:border-red-300 text-red-600 font-medium py-2.5 rounded-xl transition flex items-center justify-center gap-2 text-sm bg-white hover:bg-red-50"
@@ -267,7 +214,7 @@ const PropertySearch = () => {
   const [filters, setFilters] = useState({
     priceMin: 5000,
     priceMax: 100000,
-    amenities: [],
+    selectedAmenities: [],
     propertyType: "",
     availability: "",
     search: "",
@@ -281,6 +228,12 @@ const PropertySearch = () => {
   const [availability, setAvailability] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
   const [sortOption, setSortOption] = useState("best-match");
+
+  // Dynamic filter options from backend
+  const [amenityOptions, setAmenityOptions] = useState([]);
+  const [propertyTypeOptions, setPropertyTypeOptions] = useState([]);
+  const [availabilityOptions, setAvailabilityOptions] = useState([]);
+  const [loadingFilterOptions, setLoadingFilterOptions] = useState(false);
 
   // Pagination
   const [currentPage, setCurrentPage] = useState(1);
@@ -315,7 +268,7 @@ const PropertySearch = () => {
       try {
         setTrendingLoading(true);
         const res = await axios.get(
-          "http://localhost:5000/api/auth/v1/listings/trending",
+          "http://localhost:5000/api/auth/v1/listings/trending"
         );
         if (res.data && Array.isArray(res.data)) {
           setTrendingProperties(res.data.slice(0, 3));
@@ -332,7 +285,37 @@ const PropertySearch = () => {
     fetchTrending();
   }, [listings]);
 
-  // Fetch listings
+  // Fetch all filter options from backend
+  useEffect(() => {
+    const fetchFilterOptions = async () => {
+      setLoadingFilterOptions(true);
+      try {
+        const [amenitiesRes, typesRes, availRes] = await Promise.all([
+          axios.get("http://localhost:5000/api/auth/filters/amenities"),
+          axios.get("http://localhost:5000/api/auth/filters/property-types"),
+          axios.get("http://localhost:5000/api/auth/filters/availability"),
+        ]);
+
+        if (Array.isArray(amenitiesRes.data)) setAmenityOptions(amenitiesRes.data);
+        if (Array.isArray(typesRes.data)) setPropertyTypeOptions(typesRes.data);
+        if (Array.isArray(availRes.data)) setAvailabilityOptions(availRes.data);
+      } catch (err) {
+        console.error("Failed to load filter options", err);
+        // Fallback static lists (same as schema)
+        setAmenityOptions([
+          "Parking","Gym","24*7","Powerbackup","Lift","Swimmingpool",
+          "Garden","Playground","CCTV","Water Supply","Internet/Wifi","Air-Conditioning"
+        ]);
+        setPropertyTypeOptions(["Apartment", "Villa", "PG/Hostel", "Office Space"]);
+        setAvailabilityOptions(["immediate", "within15"]);
+      } finally {
+        setLoadingFilterOptions(false);
+      }
+    };
+    fetchFilterOptions();
+  }, []);
+
+  // Fetch listings with current filters
   const fetchListings = useCallback(async () => {
     setLoading(true);
     setError(null);
@@ -347,13 +330,13 @@ const PropertySearch = () => {
         search: filters.search || undefined,
         sort: filters.sort,
       };
-      if (filters.amenities.length > 0) {
-        params.amenities = filters.amenities.join(",");
+      if (filters.selectedAmenities.length > 0) {
+        params.selectedAmenities = filters.selectedAmenities.join(",");
       }
 
       const res = await axios.get(
         "http://localhost:5000/api/auth/v1/listings",
-        { params },
+        { params }
       );
       if (res.data) {
         if (Array.isArray(res.data)) {
@@ -392,7 +375,7 @@ const PropertySearch = () => {
   }, [priceRange]);
 
   useEffect(() => {
-    setFilters((prev) => ({ ...prev, amenities: selectedAmenities }));
+    setFilters((prev) => ({ ...prev, selectedAmenities }));
   }, [selectedAmenities]);
 
   useEffect(() => {
@@ -420,7 +403,7 @@ const PropertySearch = () => {
     setSelectedAmenities((prev) =>
       prev.includes(amenity)
         ? prev.filter((a) => a !== amenity)
-        : [...prev, amenity],
+        : [...prev, amenity]
     );
     setCurrentPage(1);
   };
@@ -485,7 +468,7 @@ const PropertySearch = () => {
 
   const hasMore = totalCount > currentPage * itemsPerPage;
 
-  // Quick filters
+  // Quick filters – now using correct strings
   const quickFilters = [
     {
       label: "Under ₹15k",
@@ -495,36 +478,17 @@ const PropertySearch = () => {
     {
       label: "2 BHK+",
       icon: <Home size={14} />,
-      action: () => setPropertyTypeWithReset("Apartment"),
+      // Use first property type from options if available, otherwise default
+      action: () => setPropertyTypeWithReset(propertyTypeOptions[0] || "Apartment"),
     },
     {
       label: "With Parking",
       icon: <Car size={14} />,
       action: () => toggleAmenity("Parking"),
     },
-    {
-      label: "Pet Friendly",
-      icon: <Heart size={14} />,
-      action: () => toggleAmenity("Pet Friendly"),
-    },
-    {
-      label: "Furnished",
-      icon: <Coffee size={14} />,
-      action: () => toggleAmenity("Furnished"),
-    },
   ];
 
-  const amenitiesList = [
-    "WiFi",
-    "Parking",
-    "AC",
-    "Gym",
-    "Pool",
-    "Security",
-    "Power Backup",
-    "Furnished",
-  ];
-
+  // If loading initially and no listings
   if (loading && !refreshing && listings.length === 0) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-slate-50 to-white p-4 lg:p-8">
@@ -548,7 +512,7 @@ const PropertySearch = () => {
         searchValue={searchQuery}
       />
 
-      {/* Hero Stats / Trust Badges */}
+      {/* Hero Stats / Trust Badges (unchanged) */}
       <div className="max-w-7xl mx-auto px-4 mt-4 flex flex-wrap items-center gap-4 text-sm text-slate-600">
         <div className="flex items-center gap-1 bg-white px-3 py-1.5 rounded-full shadow-sm">
           <Shield size={14} className="text-green-500" />
@@ -566,7 +530,7 @@ const PropertySearch = () => {
 
       <div className="max-w-7xl mx-auto p-4 lg:p-8">
         {/* Quick Filter Chips */}
-        <div className="flex flex-wrap items-center gap-2 mb-6">
+        {/* <div className="flex flex-wrap items-center gap-2 mb-6">
           <span className="text-sm font-medium text-slate-700 mr-2">
             Quick filters:
           </span>
@@ -583,7 +547,7 @@ const PropertySearch = () => {
           <button className="text-xs text-red-600 hover:underline ml-2">
             + More
           </button>
-        </div>
+        </div> */}
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
           {/* Left Filter Sidebar */}
@@ -625,28 +589,32 @@ const PropertySearch = () => {
               </div>
             </div>
 
-            {/* Amenities */}
+            {/* Amenities – dynamic */}
             <div className="mt-6 pt-6 border-t border-slate-100">
               <h3 className="font-semibold mb-3">Amenities</h3>
               <div className="space-y-2 max-h-60 overflow-y-auto">
-                {amenitiesList.map((amenity) => (
-                  <label
-                    key={amenity}
-                    className="flex items-center gap-2 text-sm"
-                  >
-                    <input
-                      type="checkbox"
-                      checked={selectedAmenities.includes(amenity)}
-                      onChange={() => toggleAmenity(amenity)}
-                      className="rounded border-slate-300"
-                    />
-                    {amenity}
-                  </label>
-                ))}
+                {loadingFilterOptions ? (
+                  <div className="text-sm text-slate-500">Loading amenities...</div>
+                ) : (
+                  amenityOptions.map((amenity) => (
+                    <label
+                      key={amenity}
+                      className="flex items-center gap-2 text-sm"
+                    >
+                      <input
+                        type="checkbox"
+                        checked={selectedAmenities.includes(amenity)}
+                        onChange={() => toggleAmenity(amenity)}
+                        className="rounded border-slate-300"
+                      />
+                      {amenity}
+                    </label>
+                  ))
+                )}
               </div>
             </div>
 
-            {/* Property Type */}
+            {/* Property Type – dynamic */}
             <div className="mt-6 pt-6 border-t border-slate-100">
               <h3 className="font-semibold mb-3">Property Type</h3>
               <select
@@ -655,46 +623,41 @@ const PropertySearch = () => {
                 className="w-full px-3 py-2 border rounded-lg text-sm"
               >
                 <option value="">Any</option>
-                <option value="Apartment">Apartment</option>
-                <option value="Villa">Villa</option>
-                <option value="PG/Hostel">PG/Hostel</option>
-                <option value="Office Space">Office Space</option>
+                {propertyTypeOptions.map((type) => (
+                  <option key={type} value={type}>
+                    {type}
+                  </option>
+                ))}
               </select>
             </div>
 
-            {/* Availability */}
+            {/* Availability – dynamic */}
             <div className="mt-6 pt-6 border-t border-slate-100">
               <h3 className="font-semibold mb-3">Availability</h3>
-              <label className="flex items-center gap-2 text-sm">
-                <input
-                  type="radio"
-                  name="availability"
-                  checked={availability === "immediate"}
-                  onChange={() => setAvailabilityWithReset("immediate")}
-                  className="rounded"
-                />{" "}
-                Immediate
-              </label>
-              <label className="flex items-center gap-2 text-sm mt-2">
-                <input
-                  type="radio"
-                  name="availability"
-                  checked={availability === "within15"}
-                  onChange={() => setAvailabilityWithReset("within15")}
-                  className="rounded"
-                />{" "}
-                Within 15 days
-              </label>
-              <label className="flex items-center gap-2 text-sm mt-2">
-                <input
-                  type="radio"
-                  name="availability"
-                  checked={availability === ""}
-                  onChange={() => setAvailabilityWithReset("")}
-                  className="rounded"
-                />{" "}
-                Any
-              </label>
+              <div className="space-y-2">
+                {availabilityOptions.map((option) => (
+                  <label key={option} className="flex items-center gap-2 text-sm">
+                    <input
+                      type="radio"
+                      name="availability"
+                      checked={availability === option}
+                      onChange={() => setAvailabilityWithReset(option)}
+                      className="rounded"
+                    />
+                    {option}
+                  </label>
+                ))}
+                <label className="flex items-center gap-2 text-sm mt-2">
+                  <input
+                    type="radio"
+                    name="availability"
+                    checked={availability === ""}
+                    onChange={() => setAvailabilityWithReset("")}
+                    className="rounded"
+                  />
+                  Any
+                </label>
+              </div>
             </div>
 
             <button
@@ -705,7 +668,7 @@ const PropertySearch = () => {
             </button>
           </aside>
 
-          {/* Main Content */}
+          {/* Main Content (unchanged except for listings rendering) */}
           <main className="lg:col-span-9 space-y-8">
             {/* Header with results count and sort */}
             <div className="flex flex-wrap items-center justify-between gap-4">
@@ -719,8 +682,7 @@ const PropertySearch = () => {
                   </span>
                   <span>Most guests book within 24 hours</span>
                   <span className="flex items-center gap-1">
-                    <Eye size={14} className="text-slate-400" /> 2.5k views
-                    today
+                    <Eye size={14} className="text-slate-400" /> 2.5k views today
                   </span>
                 </p>
               </div>
@@ -771,7 +733,7 @@ const PropertySearch = () => {
               </div>
             </div>
 
-            {/* Map */}
+            {/* Map (unchanged) */}
             {showMap && (
               <div className="h-96 rounded-2xl overflow-hidden relative z-0">
                 <MapContainer
@@ -819,7 +781,7 @@ const PropertySearch = () => {
               </div>
             )}
 
-            {/* Recently Viewed */}
+            {/* Recently Viewed (unchanged) */}
             {recentlyViewed.length > 0 && (
               <div className="bg-white p-6 rounded-2xl border border-slate-100">
                 <div className="flex items-center justify-between mb-4">
@@ -860,7 +822,7 @@ const PropertySearch = () => {
               </div>
             )}
 
-            {/* Trending */}
+            {/* Trending (unchanged) */}
             <div className="bg-white p-6 rounded-2xl border border-slate-100">
               <div className="flex items-center justify-between mb-4">
                 <h2 className="font-semibold flex items-center gap-2">
@@ -928,7 +890,7 @@ const PropertySearch = () => {
               )}
             </div>
 
-            {/* Main listings with professional cards */}
+            {/* Main listings */}
             {error ? (
               <div className="bg-white rounded-3xl p-16 text-center border border-slate-100 shadow-sm">
                 <div className="text-red-500 mb-4">
@@ -998,7 +960,7 @@ const PropertySearch = () => {
               </>
             )}
 
-            {/* Trust Signals */}
+            {/* Trust Signals (unchanged) */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-8">
               <div className="bg-white p-4 rounded-xl border border-slate-100 flex items-start gap-3">
                 <div className="p-2 bg-blue-50 rounded-lg">
@@ -1035,7 +997,7 @@ const PropertySearch = () => {
               </div>
             </div>
 
-            {/* Newsletter */}
+            {/* Newsletter (unchanged) */}
             <div className="bg-gradient-to-r from-red-500 to-red-600 rounded-2xl p-6 text-white">
               <h3 className="text-lg font-bold mb-2">
                 Get notified about new properties
@@ -1058,7 +1020,7 @@ const PropertySearch = () => {
         </div>
       </div>
 
-      {/* Mobile Filter Drawer */}
+      {/* Mobile Filter Drawer – same updates as desktop */}
       {isMobileFilterOpen && (
         <div className="fixed inset-0 z-50 lg:hidden">
           <div
@@ -1075,7 +1037,6 @@ const PropertySearch = () => {
                 <X size={20} />
               </button>
             </div>
-            {/* Mobile filter content (same as sidebar) */}
             <div>
               <h3 className="font-semibold mb-2">Price Range</h3>
               <div className="flex items-center gap-2 mb-4">
@@ -1100,19 +1061,23 @@ const PropertySearch = () => {
 
               <h3 className="font-semibold mb-2">Amenities</h3>
               <div className="space-y-2 mb-4">
-                {amenitiesList.map((amenity) => (
-                  <label
-                    key={amenity}
-                    className="flex items-center gap-2 text-sm"
-                  >
-                    <input
-                      type="checkbox"
-                      checked={selectedAmenities.includes(amenity)}
-                      onChange={() => toggleAmenity(amenity)}
-                    />
-                    {amenity}
-                  </label>
-                ))}
+                {loadingFilterOptions ? (
+                  <div className="text-sm">Loading...</div>
+                ) : (
+                  amenityOptions.map((amenity) => (
+                    <label
+                      key={amenity}
+                      className="flex items-center gap-2 text-sm"
+                    >
+                      <input
+                        type="checkbox"
+                        checked={selectedAmenities.includes(amenity)}
+                        onChange={() => toggleAmenity(amenity)}
+                      />
+                      {amenity}
+                    </label>
+                  ))
+                )}
               </div>
 
               <h3 className="font-semibold mb-2">Property Type</h3>
@@ -1122,39 +1087,33 @@ const PropertySearch = () => {
                 className="w-full border p-2 rounded-lg mb-4"
               >
                 <option value="">Any</option>
-                <option value="Apartment">Apartment</option>
-                <option value="Villa">Villa</option>
-                <option value="PG/Hostel">PG/Hostel</option>
-                <option value="Office Space">Office Space</option>
+                {propertyTypeOptions.map((type) => (
+                  <option key={type} value={type}>
+                    {type}
+                  </option>
+                ))}
               </select>
 
               <h3 className="font-semibold mb-2">Availability</h3>
               <div className="space-y-2 mb-4">
-                <label className="flex items-center gap-2">
-                  <input
-                    type="radio"
-                    name="mobile-availability"
-                    checked={availability === "immediate"}
-                    onChange={() => setAvailabilityWithReset("immediate")}
-                  />{" "}
-                  Immediate
-                </label>
-                <label className="flex items-center gap-2">
-                  <input
-                    type="radio"
-                    name="mobile-availability"
-                    checked={availability === "within15"}
-                    onChange={() => setAvailabilityWithReset("within15")}
-                  />{" "}
-                  Within 15 days
-                </label>
+                {availabilityOptions.map((option) => (
+                  <label key={option} className="flex items-center gap-2">
+                    <input
+                      type="radio"
+                      name="mobile-availability"
+                      checked={availability === option}
+                      onChange={() => setAvailabilityWithReset(option)}
+                    />
+                    {option}
+                  </label>
+                ))}
                 <label className="flex items-center gap-2">
                   <input
                     type="radio"
                     name="mobile-availability"
                     checked={availability === ""}
                     onChange={() => setAvailabilityWithReset("")}
-                  />{" "}
+                  />
                   Any
                 </label>
               </div>

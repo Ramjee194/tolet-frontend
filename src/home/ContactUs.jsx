@@ -66,7 +66,7 @@ Message: ${formData.message}
                   onChange={(e)=>setFormData({...formData,name:e.target.value})}
                   className="mt-1 block w-full rounded-xl border-gray-300 shadow-sm focus:ring-primary focus:border-primary sm:text-sm p-3 dark:bg-gray-700 dark:text-white"
                   placeholder="ramjee yadav"
-                  required
+                 
                 />
               </div>
 
@@ -80,7 +80,7 @@ Message: ${formData.message}
                   onChange={(e)=>setFormData({...formData,email:e.target.value})}
                   className="mt-1 block w-full rounded-xl border-gray-300 shadow-sm focus:ring-primary focus:border-primary sm:text-sm p-3 dark:bg-gray-700 dark:text-white"
                   placeholder="ramjeekumaryadav558@gmail.com"
-                  required
+                 
                 />
               </div>
 
@@ -107,7 +107,7 @@ Message: ${formData.message}
                   onChange={(e)=>setFormData({...formData,message:e.target.value})}
                   className="mt-1 block w-full rounded-xl border-gray-300 shadow-sm focus:ring-primary focus:border-primary sm:text-sm p-3 dark:bg-gray-700 dark:text-white"
                   placeholder="Write your message here..."
-                  required
+                
                 ></textarea>
               </div>
 

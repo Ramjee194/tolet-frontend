@@ -28,6 +28,7 @@ import Confirmbooking from "./page/Confirmbooking";
 import Addpropertystep2 from "./components/Addpropertystep2";
 
 function App() {
+  
   return (
     <>
       <Navbar />

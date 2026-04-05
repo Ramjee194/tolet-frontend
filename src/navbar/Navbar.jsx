@@ -32,7 +32,7 @@ function Navbar() {
       <div className="flex justify-between items-center px-4 md:px-6 py-2 shadow-sm">
         {/* Logo */}
         <div className="flex ml-15 text-black text-lg font-bold">
-          <img className="w-24 h-14  rounded-xl" src="/toletforrentlogo.jfif" alt="" />
+          <img onClick={()=>navigate("/")} className="w-24 h-14  rounded-xl" src="/toletforrentlogo.jfif" alt="" />
         </div>
 
         {/* Desktop Menu */}
@@ -49,9 +49,13 @@ function Navbar() {
           {/* <Link to="/property-details">
             <li>PropertyDetails</li>
           </Link> */}
-          <Link className="whitespace-nowrap" to="/owner-dashboard">
-            <li>Owner Dashboard</li>
+          <Link className="whitespace-nowrap" to="/contact-us">
+          <li>Contact</li>
           </Link>
+          {/* <Link className="whitespace-nowrap" to="/owner-dashboard">
+          
+            <li>Owner Dashboard</li>
+          </Link> */}
           <Link to="/community">
             <li>Community</li>
           </Link>

@@ -33,7 +33,42 @@ function Addpropertystep2() {
   const [step1Data, setStep1Data] = useState({});
   const [imageFiles, setImageFiles] = useState([]);
   const [profileImage, setProfileImage] = useState(null);
+  const [allowedAmenities, setAllowedAmenities] = useState([]);
 
+  //ameneties
+ useEffect(() => {
+  const fetchAmenities = async () => {
+    try {
+      const res = await axios.get('http://localhost:5000/api/auth/filters/amenities');
+      console.log('Amenities response:', res.data);
+
+      // Handle different possible response shapes
+      let amenitiesArray = [];
+      if (Array.isArray(res.data)) {
+        amenitiesArray = res.data;
+      } else if (res.data && Array.isArray(res.data.amenities)) {
+        amenitiesArray = res.data.amenities;
+      } else if (res.data && Array.isArray(res.data.data)) {
+        amenitiesArray = res.data.data;
+      } else {
+        // fallback to hardcoded list from your schema
+        amenitiesArray = [
+          "Parking","Gym","24*7","Powerbackup","Lift","Swimmingpool",
+          "Garden","Playground","CCTV","Water Supply","Internet/Wifi","Air-Conditioning"
+        ];
+      }
+      setAllowedAmenities(amenitiesArray);
+    } catch (err) {
+      console.error('Failed to load amenities', err);
+      // Fallback so the UI doesn't break
+      setAllowedAmenities([
+        "Parking","Gym","24*7","Powerbackup","Lift","Swimmingpool",
+        "Garden","Playground","CCTV","Water Supply","Internet/Wifi","Air-Conditioning"
+      ]);
+    }
+  };
+  fetchAmenities();
+}, []);
   // Load Step 1 data on mount
   useEffect(() => {
     const savedData = localStorage.getItem("property_step1");
@@ -99,9 +134,11 @@ function Addpropertystep2() {
       data.append("profileImage", profileImage);
 
       // Append amenities as individual items for backend
-      selectedAmenities.forEach((amenity, index) => {
-        data.append(`amenities[${index}]`, amenity);
+      selectedAmenities.forEach((amenity) => {
+        data.append("selectedAmenities", amenity); // ✅ matches database field
       });
+
+      // Images
 
       // Append images
       if (imageFiles.length > 0) {
@@ -157,20 +194,20 @@ function Addpropertystep2() {
     }
   };
 
-  const amenitiesList = [
-    { id: 1, name: "Parking", icon: <Car size={18} /> },
-    { id: 2, name: "Gym", icon: <Dumbbell size={18} /> },
-    { id: 3, name: "24*7 security", icon: <ShieldCheck size={18} /> },
-    { id: 4, name: "Power Backup", icon: <Zap size={18} /> },
-    { id: 5, name: "Lift", icon: <ArrowUpCircle size={18} /> },
-    { id: 6, name: "Swimming pool", icon: <Waves size={18} /> },
-    { id: 7, name: "Garden", icon: <Flower2 size={18} /> },
-    { id: 8, name: "Playground", icon: <Baby size={18} /> },
-    { id: 9, name: "CCTV", icon: <Camera size={18} /> },
-    { id: 10, name: "Water supply", icon: <Droplets size={18} /> },
-    { id: 11, name: "Internet/Wifi", icon: <Wifi size={18} /> },
-    { id: 12, name: "Air-Condition", icon: <Wind size={18} /> },
-  ];
+  // const amenitiesList = [
+  //   { id: 1, name: "Parking", icon: <Car size={18} /> },
+  //   { id: 2, name: "Gym", icon: <Dumbbell size={18} /> },
+  //   { id: 3, name: "24*7", icon: <ShieldCheck size={18} /> },          // match schema
+  //   { id: 4, name: "Powerbackup", icon: <Zap size={18} /> },            // match schema
+  //   { id: 5, name: "Lift", icon: <ArrowUpCircle size={18} /> },
+  //   { id: 6, name: "Swimmingpool", icon: <Waves size={18} /> },         // no space
+  //   { id: 7, name: "Garden", icon: <Flower2 size={18} /> },
+  //   { id: 8, name: "Playground", icon: <Baby size={18} /> },
+  //   { id: 9, name: "CCTV", icon: <Camera size={18} /> },
+  //   { id: 10, name: "Water Supply", icon: <Droplets size={18} /> },
+  //   { id: 11, name: "Internet/Wifi", icon: <Wifi size={18} /> },        // slash
+  //   { id: 12, name: "Air-Conditioning", icon: <Wind size={18} /> },     // hyphen
+  // ];
 
   const handleToggleAmenity = (name) => {
     setSelectedAmenities((prev) =>
@@ -209,39 +246,48 @@ function Addpropertystep2() {
           </div>
 
           {/* Amenities */}
-          <div>
-            <h2 className="text-lg font-bold text-slate-800 mb-4">
-              Select Amenities
-            </h2>
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
-              {amenitiesList.map((item) => (
-                <div
-                  key={item.id}
-                  onClick={() => handleToggleAmenity(item.name)}
-                  className={`flex items-center gap-3 p-5 border rounded-sm cursor-pointer transition-all ${
-                    selectedAmenities.includes(item.name)
-                      ? "border-green-600 bg-green-50 shadow-sm"
-                      : "border-gray-100 bg-white hover:border-green-200"
-                  }`}
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+            {allowedAmenities.map((amenity, index) => (
+              <div
+                key={index}
+                onClick={() => handleToggleAmenity(amenity)}
+                className={`flex items-center gap-3 p-5 border rounded-sm cursor-pointer transition-all ${
+                  selectedAmenities.includes(amenity)
+                    ? "border-green-600 bg-green-50 shadow-sm"
+                    : "border-gray-100 bg-white hover:border-green-200"
+                }`}
+              >
+                {/* Optional: map icons based on amenity name */}
+                <span
+                  className={
+                    selectedAmenities.includes(amenity)
+                      ? "text-green-600"
+                      : "text-gray-400"
+                  }
                 >
-                  <span
-                    className={
-                      selectedAmenities.includes(item.name)
-                        ? "text-green-600"
-                        : "text-gray-400"
-                    }
-                  >
-                    {item.icon}
-                  </span>
-                  <span
-                    className={`text-sm font-medium ${selectedAmenities.includes(item.name) ? "text-green-800" : "text-gray-600"}`}
-                  >
-                    {item.name}
-                  </span>
-                </div>
-              ))}
-            </div>
+                  {amenity.includes("Parking") && <Car size={18} />}
+                  {amenity.includes("Gym") && <Dumbbell size={18} />}
+                  {amenity.includes("24*7") && <ShieldCheck size={18} />}
+                  {amenity.includes("Powerbackup") && <Zap size={18} />}
+                  {amenity.includes("Lift") && <ArrowUpCircle size={18} />}
+                  {amenity.includes("Swimmingpool") && <Waves size={18} />}
+                  {amenity.includes("Garden") && <Flower2 size={18} />}
+                  {amenity.includes("Playground") && <Baby size={18} />}
+                  {amenity.includes("CCTV") && <Camera size={18} />}
+                  {amenity.includes("Water Supply") && <Droplets size={18} />}
+                  {amenity.includes("Internet/Wifi") && <Wifi size={18} />}
+                  {amenity.includes("Air-Conditioning") && <Wind size={18} />}
+                </span>
+                <span
+                  className={`text-sm font-medium ${selectedAmenities.includes(amenity) ? "text-green-800" : "text-gray-600"}`}
+                >
+                  {amenity}
+                </span>
+              </div>
+            ))}
           </div>
+
+          
           {/* profileImage */}
           <div>
             <label className="font-bold uppercase ">Choose Profile Image</label>
