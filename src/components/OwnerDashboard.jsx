@@ -105,7 +105,7 @@ const OwnerDashboard = () => {
   const fetchProperties = async () => {
     try {
       setLoading(true);
-      const res = await axios.get("http://localhost:5000/api/auth/v1/listings");
+      const res = await axios.get(`${import.meta.env.VITE_API_URL}/api/auth/v1/listings`);
       
       if (res.data && Array.isArray(res.data)) {
         const enhancedProperties = res.data.map((property, index) => {
@@ -780,7 +780,7 @@ const PropertyDetail = ({ property, onBack }) => {
   const handleDelete = async () => {
     if (window.confirm('Are you sure you want to delete this property?')) {
       try {
-        const res = await axios.delete(`http://localhost:5000/api/auth/v1/listings/${property._id}`);
+        const res = await axios.delete(`${import.meta.env.VITE_API_URL}/api/auth/v1/listings/${property._id}`);
         console.log(res.data);
         alert('Property deleted successfully');
         onBack();

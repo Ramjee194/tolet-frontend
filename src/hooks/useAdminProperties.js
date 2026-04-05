@@ -10,7 +10,7 @@ export const useAdminProperties = () => {
   const fetchProperties = async () => {
     try {
       setLoading(true);
-      const res = await axios.get("http://localhost:5000/api/auth/v1/listings");
+      const res = await axios.get(`${import.meta.env.VITE_API_URL}/api/auth/v1/listings`);
 
       if (res.data && Array.isArray(res.data)) {
         // Enhance properties with additional data
@@ -80,7 +80,7 @@ export const useAdminProperties = () => {
 
   const deleteProperty = async (id) => {
     try {
-      const res = await axios.delete(`http://localhost:5000/api/auth/v1/listings/${id}`);
+      const res = await axios.delete(`${import.meta.env.VITE_API_URL}/api/auth/v1/listings/${id}`);
       if (res.status === 200) {
         await fetchProperties(); // Refresh the list
         return { success: true };

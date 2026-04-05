@@ -50,7 +50,7 @@ const Properties = ({
       const token = localStorage.getItem("token");
 
       const res = await axios.put(
-        `http://localhost:5000/api/admin/listings/${id}/status`,
+        `${import.meta.env.VITE_API_URL}/api/admin/listings/${id}/status`,
         { status: newStatus },
         {
           headers: {

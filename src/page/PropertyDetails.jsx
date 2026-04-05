@@ -137,7 +137,7 @@ const PropertyDetail = () => {
     try {
       setLoading(true);
       const res = await axios.get(
-        `http://localhost:5000/api/auth/v1/listings/${id}`,
+        `${import.meta.env.VITE_API_URL}/api/auth/v1/listings/${id}`,
       );
 
       if (res.data) {
@@ -201,7 +201,7 @@ const PropertyDetail = () => {
     try {
       setSimilarLoading(true);
       const response = await axios.get(
-        "http://localhost:5000/api/auth/v1/listings",
+        `${import.meta.env.VITE_API_URL}/api/auth/v1/listings`,
         { params: { limit: 8 } },
       );
 
@@ -279,7 +279,7 @@ const PropertyDetail = () => {
     }
 
     const res = await axios.post(
-      `http://localhost:5000/api/auth/v1/listings/${id}/visit`,
+      `${import.meta.env.VITE_API_URL}/api/auth/v1/listings/${id}/visit`,
       formData,
       {
         headers: {

@@ -30,7 +30,7 @@ const PropertyDetail = ({
       try {
         const token = localStorage.getItem("token");
         const res = await axios.delete(
-          `http://localhost:5000/api/listings/${property._id}`,
+          `${import.meta.env.VITE_API_URL}/api/listings/${property._id}`,
           {
             headers: {
               Authorization: `Bearer ${token}`,

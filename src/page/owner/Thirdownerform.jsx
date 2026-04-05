@@ -39,7 +39,7 @@ function Thirdownerform() {
             });
 
             // 4. Send Request with multipart/form-data headers
-            await axios.post("http://localhost:5000/api/ownerform/register", formData, {
+            await axios.post(`${import.meta.env.VITE_API_URL}/api/ownerform/register`, formData, {
                 // headers: {
                 //     'Content-Type': 'multipart/form-data'
                 // }

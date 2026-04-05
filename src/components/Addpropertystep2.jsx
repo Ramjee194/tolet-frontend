@@ -39,7 +39,7 @@ function Addpropertystep2() {
  useEffect(() => {
   const fetchAmenities = async () => {
     try {
-      const res = await axios.get('http://localhost:5000/api/auth/filters/amenities');
+      const res = await axios.get(`${import.meta.env.VITE_API_URL}/api/auth/filters/amenities`);
       console.log('Amenities response:', res.data);
 
       // Handle different possible response shapes
@@ -162,7 +162,7 @@ function Addpropertystep2() {
       }
       const token = localStorage.getItem("token");
       const res = await axios.post(
-        "http://localhost:5000/api/auth/v1/listings",
+        `${import.meta.env.VITE_API_URL}/api/auth/v1/listings`,
         data,
         {
           headers: {

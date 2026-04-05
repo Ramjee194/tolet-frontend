@@ -14,7 +14,7 @@ const SearchBar = ({ viewMode, setViewMode, searchValue, onSearch }) => {
     const fetchAllListings = async () => {
       setLoadingSuggestions(true);
       try {
-        const res = await axios.get('http://localhost:5000/api/auth/v1/listings?limit=100');
+        const res = await axios.get(`${import.meta.env.VITE_API_URL}/api/auth/v1/listings?limit=100`);
         const data = Array.isArray(res.data) ? res.data : res.data.listings || [];
         setAllProperties(data);
       } catch (error) {

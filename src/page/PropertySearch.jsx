@@ -268,7 +268,7 @@ const PropertySearch = () => {
       try {
         setTrendingLoading(true);
         const res = await axios.get(
-          "http://localhost:5000/api/auth/v1/listings/trending"
+          `${import.meta.env.VITE_API_URL}/api/auth/v1/listings/trending`
         );
         if (res.data && Array.isArray(res.data)) {
           setTrendingProperties(res.data.slice(0, 3));
@@ -291,9 +291,9 @@ const PropertySearch = () => {
       setLoadingFilterOptions(true);
       try {
         const [amenitiesRes, typesRes, availRes] = await Promise.all([
-          axios.get("http://localhost:5000/api/auth/filters/amenities"),
-          axios.get("http://localhost:5000/api/auth/filters/property-types"),
-          axios.get("http://localhost:5000/api/auth/filters/availability"),
+          axios.get(`${import.meta.env.VITE_API_URL}/api/auth/filters/amenities`),
+          axios.get(`${import.meta.env.VITE_API_URL}/api/auth/filters/property-types`),
+          axios.get(`${import.meta.env.VITE_API_URL}/api/auth/filters/availability`),
         ]);
 
         if (Array.isArray(amenitiesRes.data)) setAmenityOptions(amenitiesRes.data);
@@ -335,7 +335,7 @@ const PropertySearch = () => {
       }
 
       const res = await axios.get(
-        "http://localhost:5000/api/auth/v1/listings",
+        `${import.meta.env.VITE_API_URL}/api/auth/v1/listings`,
         { params }
       );
       if (res.data) {

@@ -16,7 +16,7 @@ function SearchComponents() {
     const fetchBackendData = async () => {
       try {
         setLoading(true);
-        const response = await fetch("http://localhost:5000/api/auth/v1/listings");
+        const response = await fetch(`${import.meta.env.VITE_API_URL}/api/auth/v1/listings`);
         const result = await response.json();
         
         // Safety check: Ensure we are setting an array
